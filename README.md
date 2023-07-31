@@ -12,16 +12,16 @@ Service responsible for managing financial institutions.
 
 ##  📔 Table of Contents
 <!--ts-->
-   * [Pre-requirements](#pre-requirements)
-   * [How to use](#how-to-use)
+   * [Pre-requirements](#✂️-pre-requirements)
+   * [How to use](#🎮-how-to-use)
       * [Setup](#setup)
       * [Run](#run)
-   * [Tests](#testes)
-   * [Tools](#tools)
+   * [Tests](#📌-tests)
+   * [Tools](#🔨-tools)
 <!--te-->
 
 ## ✂️ Pre-requirements
-* Golang 1.18
+* [Golang 1.20](https://go.dev/doc/install)
 
 ## 🎮 How to use
 
@@ -55,7 +55,7 @@ go test .
 ```
 
 
-##  🔨  Tools
+## 🔨 Tools
 
 The following tools were used to build this project:
 
