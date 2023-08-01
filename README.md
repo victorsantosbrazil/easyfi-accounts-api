@@ -21,7 +21,7 @@ Service responsible for managing financial institutions.
 <!--te-->
 
 ## ✂️ Pre-requirements
-* [Golang 1.20](https://go.dev/doc/install)
+* [Golang 1.20.7](https://go.dev/doc/install)
 
 ## 🎮 How to use
 
