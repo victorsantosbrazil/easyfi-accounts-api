@@ -6,8 +6,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+type DatabaseConfig struct {
+	Driver   string
+	Host     string
+	Port     int
+	Name     string
+	Username string
+	Password string
+}
+
+func (d *DatabaseConfig) GetUrl() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", d.Username, d.Password, d.Host, d.Port, d.Name)
+}
+
 type Config struct {
-	Port int
+	Port     int
+	Database DatabaseConfig
 }
 
 func (c *Config) GetAddress() string {

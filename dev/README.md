@@ -1,34 +1,49 @@
 # Dev Manual
 
-<p>The aim of the dev manual is to help developers through the development process, providing guidelines, IDE setup, tools, local environment setup, helper scripts, and other useful information. </p>
+<p>The aim of the dev manual is to help developers, providing guidelines, IDE setup, tools, local environment boostrap, helper scripts, and other useful stuff. </p>
 
 ##  📔 Table of Contents
 <!--ts-->
    * [Pre-requirements](#✂️-pre-requirements)
    * [DevTools](#🔨-devtools)
       * [Instalation](#instalation)
+   * [Local environment](#🎨-local-environment)
+      * [Start](#start)
+      * [Stop](#stop)
 <!--te-->
 
 ## ✂️ Pre-requirements
 * [Golang 1.20](https://go.dev/doc/install)
+* [Docker](https://docs.docker.com/get-docker/)
 
 ## 🔨 DevTools
-Tools used by the developers during the process of development.
+Tools used for the developers during development process.
 
 * [golangci-lint](https://golangci-lint.run/)
 * [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
 
 ### Instalation
 
-To install all tools run the following command based on your operation system.
-
-* Linux
+To install all tools, run the following command:
 
 ```
 ./dev/scripts/linux/install-dev-tools.sh
 ```
 
-* Windows
+## 🎨 Local Environment
+
+### Start
+
+To start local environment, run the following command:
+
 ```
-./dev/scripts/windows/install-dev-tools.bat
+./dev/scripts/windows/start-local-env.sh
+```
+
+### Stop
+
+To stop local environment, run the following command:
+
+```
+./dev/scripts/linux/stop-local-env.sh
 ```
