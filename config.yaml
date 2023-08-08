@@ -1,1 +1,8 @@
 port: 8080
+database:
+  driver: mysql 
+  host: localhost
+  port: 3306
+  name: financial_institutions
+  username: dbuser
+  password: password
