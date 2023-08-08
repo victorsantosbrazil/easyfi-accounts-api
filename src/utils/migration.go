@@ -9,7 +9,7 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/config"
 )
 
-const _MIGRATIONS_DIR = "database/migration"
+const _MIGRATIONS_DIR = "database/migrations"
 
 type Migration interface {
 	Up() error
