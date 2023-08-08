@@ -27,7 +27,7 @@ Tools used for the developers during development process.
 To install all tools, run the following command:
 
 ```
-./dev/scripts/linux/install-dev-tools.sh
+./dev/scripts/install-dev-tools.sh
 ```
 
 ## 🎨 Local Environment
@@ -37,7 +37,7 @@ To install all tools, run the following command:
 To start local environment, run the following command:
 
 ```
-./dev/scripts/windows/start-local-env.sh
+./dev/scripts/start-local-env.sh
 ```
 
 ### Stop
@@ -45,5 +45,5 @@ To start local environment, run the following command:
 To stop local environment, run the following command:
 
 ```
-./dev/scripts/linux/stop-local-env.sh
+./dev/scripts/stop-local-env.sh
 ```
