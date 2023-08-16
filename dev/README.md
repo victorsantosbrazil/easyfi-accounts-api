@@ -21,6 +21,7 @@ Tools used for the developers during development process.
 
 * [golangci-lint](https://golangci-lint.run/)
 * [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
+* [wire](https://github.com/google/wire)
 
 ### Instalation
 

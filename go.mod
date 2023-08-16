@@ -3,16 +3,23 @@ module github.com/victorsantosbrazil/financial-institutions-api
 go 1.20
 
 require (
+	github.com/google/wire v0.5.0
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/spf13/viper v1.16.0
 )
 
-require github.com/go-sql-driver/mysql v1.5.0 // indirect
+require (
+	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/google/subcommands v1.0.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/mod v0.10.0 // indirect
+	golang.org/x/tools v0.9.1 // indirect
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/golang-migrate/migrate v3.5.4+incompatible
-	github.com/golang-migrate/migrate/v4 v4.16.2 // indirect
+	github.com/golang-migrate/migrate/v4 v4.16.2
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
