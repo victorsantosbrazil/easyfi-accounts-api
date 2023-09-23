@@ -23,7 +23,6 @@ Service responsible for managing financial institutions.
 ## ✂️ Pre-requirements
 * Linux
 * [Golang 1.20.7](https://go.dev/doc/install)
-* [wire](https://github.com/google/wire)
 
 ## 🎮 How to use
 
@@ -39,21 +38,14 @@ Enter the project folder
 cd financial-institutions-api
 ```
 
-Build
+Install
 ```
-make
+make install
 ```
 
 ### Run
 ```
-go run main.go
-```
-
-## 📌 Tests
-
-To run all tests.
-```
-go test .
+make run
 ```
 
 
@@ -63,5 +55,7 @@ The following tools were used to build this project:
 
 * [Golang](https://go.dev/)
 * [Echo v4](https://echo.labstack.com/)
-* [Migrate](https://github.com/golang-migrate/migrate)
-* [Wire](https://github.com/google/wire)
+* [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
+* [gomock](https://github.com/golang/mock)
+* [migrate](https://github.com/golang-migrate/migrate)
+* [wire](https://github.com/google/wire)

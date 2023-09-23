@@ -17,11 +17,10 @@
 * [Docker](https://docs.docker.com/get-docker/)
 
 ## 🔨 DevTools
-Tools used for the developers during development process.
 
 * [golangci-lint](https://golangci-lint.run/)
 * [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
-* [wire](https://github.com/google/wire)
+* [gomock](https://github.com/golang/mock)
 
 ### Instalation
 
@@ -47,4 +46,11 @@ To stop local environment, run the following command:
 
 ```
 ./dev/scripts/stop-local-env.sh
+```
+
+## Tests
+
+### Run
+```
+go test .
 ```
