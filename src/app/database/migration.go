@@ -1,4 +1,4 @@
-package utils
+package database
 
 import (
 	"database/sql"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/main/config"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 )
 
 const _MIGRATIONS_DIR = "database/migrations"

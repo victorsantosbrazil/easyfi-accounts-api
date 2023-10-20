@@ -21,8 +21,7 @@ Service responsible for managing financial institutions.
 <!--te-->
 
 ## ✂️ Pre-requirements
-* Linux
-* [Golang 1.20.7](https://go.dev/doc/install)
+* [Golang](https://go.dev/doc/install)
 
 ## 🎮 How to use
 
@@ -47,7 +46,6 @@ make install
 ```
 make run
 ```
-
 
 ## 🔨 Tools
 

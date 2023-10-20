@@ -1,3 +1,2 @@
-dev/docker/data/
-
+*_mock.go
 wire_gen.go

@@ -10,6 +10,8 @@
    * [Local environment](#🎨-local-environment)
       * [Start](#start)
       * [Stop](#stop)
+   * [Vulnerabilities Check](#🚩-vulnerabilities-check)
+   * [Tests](#🔬-tests)
 <!--te-->
 
 ## ✂️ Pre-requirements
@@ -24,7 +26,7 @@
 
 ### Instalation
 
-To install all tools, run the following command:
+To install all tools, run:
 
 ```
 ./dev/scripts/install-dev-tools.sh
@@ -33,24 +35,29 @@ To install all tools, run the following command:
 ## 🎨 Local Environment
 
 ### Start
-
-To start local environment, run the following command:
+To start local environment, run:
 
 ```
 ./dev/scripts/start-local-env.sh
 ```
 
 ### Stop
-
-To stop local environment, run the following command:
+To stop local environment, run:
 
 ```
 ./dev/scripts/stop-local-env.sh
 ```
 
-## Tests
 
-### Run
+## 🚩 Vulnerabilities check
+To check for vulnerabilities in dependencies, run:
+
 ```
-go test .
+make vulncheck
+```
+
+## 🔬  Tests
+To run all tests, run
+```
+make test
 ```

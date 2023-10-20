@@ -6,7 +6,7 @@ import (
 	"time"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	app "github.com/victorsantosbrazil/financial-institutions-api/src/main"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app"
 )
 
 func Logging(next http.Handler) http.Handler {

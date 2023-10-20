@@ -1,12 +1,20 @@
 install-dependencies:
-	go get .
-vulncheck: 
-	go install golang.org/x/vuln/cmd/govulncheck@latest
-	govulncheck ./...
+	@echo "Installing dependencies..."
+	@go get .
+wire:
+	@go generate ./src/app/wire.go > /dev/null
 build:
-	go generate ./src/...
-	go generate ./src/main/wire.go
-install: install-dependencies vulncheck build
+	@echo "Building..."
+	@go generate -skip=wire ./...
+	@make wire > /dev/null
+vulncheck: 
+	@echo "Checking for vulnerabilities..."
+	@go install golang.org/x/vuln/cmd/govulncheck@latest
+	@govulncheck ./...
+test:
+	@echo "Executing tests..."
+	@go test ./src/...
+install: install-dependencies build vulncheck test
 run:
-	go run main.go
+	@go run main.go
 
