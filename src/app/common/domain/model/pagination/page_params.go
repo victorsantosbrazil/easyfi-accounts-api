@@ -1,4 +1,4 @@
-package model
+package pagination
 
 import (
 	"net/url"
@@ -17,7 +17,7 @@ const (
 )
 
 type (
-	PageRequest struct {
+	PageParams struct {
 		Page  int
 		Size  int
 		Sorts []Sort
@@ -27,36 +27,27 @@ type (
 		Property string
 		Order    string
 	}
-
-	Pagination struct {
-		Page       int  `json:"page"`
-		Size       int  `json:"size"`
-		TotalPages int  `json:"totalPages"`
-		Total      int  `json:"total"`
-		Last       bool `json:"last"`
-		First      bool `json:"first"`
-	}
 )
 
-func NewPageRequest(urlValues url.Values) (pageRequest PageRequest, err error) {
+func NewPageParams(urlValues url.Values) (pageParams PageParams, err error) {
 	queryParams := QueryParams(urlValues)
 
-	pageRequest.Page, err = queryParams.GetIntOrDefault("page", 0)
+	pageParams.Page, err = queryParams.GetIntOrDefault("page", 0)
 	if err != nil {
-		return pageRequest, err
+		return pageParams, err
 	}
 
-	pageRequest.Size, err = queryParams.GetIntOrDefault("size", DEFAULT_PAGE_SIZE)
+	pageParams.Size, err = queryParams.GetIntOrDefault("size", DEFAULT_PAGE_SIZE)
 	if err != nil {
-		return pageRequest, err
+		return pageParams, err
 	}
 
-	pageRequest.Sorts, err = newPageRequestSorts(queryParams)
+	pageParams.Sorts, err = newPageParamsSorts(queryParams)
 
-	return pageRequest, err
+	return pageParams, err
 }
 
-func newPageRequestSorts(queryParams QueryParams) (sorts []Sort, err error) {
+func newPageParamsSorts(queryParams QueryParams) (sorts []Sort, err error) {
 	sortStrings := queryParams.GetStrings("sort")
 
 	for _, sortString := range sortStrings {

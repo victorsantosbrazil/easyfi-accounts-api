@@ -11,10 +11,11 @@ vulncheck:
 	@echo "Checking for vulnerabilities..."
 	@go install golang.org/x/vuln/cmd/govulncheck@latest
 	@govulncheck ./...
+mock:
+	@go generate -run=test ./...
 test:
 	@echo "Executing tests..."
 	@go test ./src/...
 install: install-dependencies build vulncheck test
 run:
 	@go run main.go
-

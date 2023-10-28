@@ -1,4 +1,4 @@
-package model
+package pagination
 
 import (
 	"strconv"
@@ -20,13 +20,13 @@ func (p QueryParams) GetStrings(key string) []string {
 	return p[key]
 }
 
-func (p QueryParams) GetIntOrDefault(key string, dflt int) (intValue int, err error) {
-	if value := p.GetString(key); value != "" {
-		intValue, err = strconv.Atoi(value)
+func (p QueryParams) GetIntOrDefault(key string, dflt int) (value int, err error) {
+	if strValue := p.GetString(key); strValue != "" {
+		value, err = strconv.Atoi(strValue)
 		if err != nil {
 			return 0, exception.IllegalArgumentException(key, value)
 		}
-		return intValue, nil
+		return value, nil
 	} else {
 		return dflt, nil
 	}

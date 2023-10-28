@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-	cmnmodel "github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model/pagination"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/usecase"
 )
 
@@ -35,10 +35,10 @@ func TestListInstitutions(t *testing.T) {
 	queryParams.Add("page", strconv.Itoa(page))
 	queryParams.Add("size", strconv.Itoa(size))
 
-	pageRequest := cmnmodel.PageRequest{Page: page, Size: size}
-	expected := usecase.ListInstitutionsUseCaseResponse{Pagination: cmnmodel.Pagination{}, Items: []usecase.ListInstitutionsUseCaseResponseItem{
-		{Id: 1, Name: "Nubank"},
-		{Id: 2, Name: "Brazil"},
+	pageRequest := pagination.PageParams{Page: page, Size: size}
+	expected := usecase.ListInstitutionsUseCaseResponse{Pagination: pagination.Pagination{}, Items: []usecase.ListInstitutionsUseCaseResponseItem{
+		{CountryId: 1, Name: "Nubank"},
+		{CountryId: 2, Name: "Brazil Bank"},
 	}}
 
 	listUseCase.EXPECT().Run(eCtx.Request().Context(), pageRequest).Return(expected)

@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
-	cmnmodel "github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model/pagination"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/usecase"
 )
 
@@ -16,12 +16,12 @@ type InstitutionController struct {
 func (c *InstitutionController) list(eCtx echo.Context) error {
 	ctx := eCtx.Request().Context()
 
-	pageRequest, err := cmnmodel.NewPageRequest(eCtx.QueryParams())
+	pageParams, err := pagination.NewPageParams(eCtx.QueryParams())
 	if err != nil {
 		return err
 	}
 
-	response := c.listUseCase.Run(ctx, pageRequest)
+	response := c.listUseCase.Run(ctx, pageParams)
 	return eCtx.JSON(200, response)
 }
 

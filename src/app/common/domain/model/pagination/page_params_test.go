@@ -1,4 +1,4 @@
-package model
+package pagination
 
 import (
 	"net/url"
@@ -9,8 +9,8 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/exception"
 )
 
-func TestNewPageRequest(t *testing.T) {
-	t.Run("returns PageRequest with values from query params", func(t *testing.T) {
+func TestNewPageParams(t *testing.T) {
+	t.Run("returns PageParams with values from query params", func(t *testing.T) {
 		page := 2
 		size := 5
 		sortStrings := []string{"name,asc", "age,desc"}
@@ -21,7 +21,7 @@ func TestNewPageRequest(t *testing.T) {
 			"sort": sortStrings,
 		}
 
-		expected := PageRequest{
+		expected := PageParams{
 			Page: page,
 			Size: size,
 			Sorts: []Sort{
@@ -29,21 +29,21 @@ func TestNewPageRequest(t *testing.T) {
 				{Property: "age", Order: ORDER_DESC},
 			},
 		}
-		actual, err := NewPageRequest(urlValues)
+		actual, err := NewPageParams(urlValues)
 
 		if assert.NoError(t, err) {
 			assert.Equal(t, expected, actual)
 		}
 	})
 
-	t.Run("returns PageRequest with default values when paging params are not informed", func(t *testing.T) {
+	t.Run("returns PageParams with default values when paging params are not informed", func(t *testing.T) {
 		urlValues := url.Values{}
 
-		expected := PageRequest{
+		expected := PageParams{
 			Size: DEFAULT_PAGE_SIZE,
 		}
 
-		actual, err := NewPageRequest(urlValues)
+		actual, err := NewPageParams(urlValues)
 
 		if assert.NoError(t, err) {
 			assert.Equal(t, expected, actual)
@@ -59,7 +59,7 @@ func TestNewPageRequest(t *testing.T) {
 		}
 
 		expectedErr := exception.IllegalArgumentException(param, value)
-		_, err := NewPageRequest(urlValues)
+		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
 	})
@@ -73,7 +73,7 @@ func TestNewPageRequest(t *testing.T) {
 		}
 
 		expectedErr := exception.IllegalArgumentException(param, value)
-		_, err := NewPageRequest(urlValues)
+		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
 	})
@@ -87,7 +87,7 @@ func TestNewPageRequest(t *testing.T) {
 		}
 
 		expectedErr := exception.IllegalArgumentException(param, value)
-		_, err := NewPageRequest(urlValues)
+		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
 	})
