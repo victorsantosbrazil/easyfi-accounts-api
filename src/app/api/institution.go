@@ -28,7 +28,7 @@ func (c *InstitutionController) list(eCtx echo.Context) error {
 func NewInstitutionController(v1 V1Group, listUseCase usecase.ListInstitutionsUseCase) *InstitutionController {
 
 	c := &InstitutionController{
-		Group:       (*echo.Group)(v1).Group(_CONTROLLER_PATH),
+		Group:       v1.Group(_CONTROLLER_PATH),
 		listUseCase: listUseCase,
 	}
 

@@ -13,8 +13,8 @@ import (
 type ListInstitutionsUseCaseResponse pagination.Page[ListInstitutionsUseCaseResponseItem]
 
 type ListInstitutionsUseCaseResponseItem struct {
-	CountryId int    `json:"countryId"`
-	Name      string `json:"name"`
+	Id   int    `json:"countryId"`
+	Name string `json:"name"`
 }
 
 type ListInstitutionsUseCase interface {
@@ -27,10 +27,10 @@ type listInstitutionsUseCaseImpl struct {
 
 func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagination.PageParams) ListInstitutionsUseCaseResponse {
 	pageInstitutions := u.institutionRepository.GetPage(ctx, pageParams)
-	page := pagination.MapPage((pagination.Page[entity.Institution])(pageInstitutions), func(institution entity.Institution) ListInstitutionsUseCaseResponseItem {
+	page := pagination.MapPage(pageInstitutions, func(institution entity.Institution) ListInstitutionsUseCaseResponseItem {
 		return ListInstitutionsUseCaseResponseItem{
-			CountryId: institution.CountryId,
-			Name:      institution.Name,
+			Id:   institution.Id,
+			Name: institution.Name,
 		}
 	})
 

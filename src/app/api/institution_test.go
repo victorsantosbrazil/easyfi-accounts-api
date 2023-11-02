@@ -37,8 +37,8 @@ func TestListInstitutions(t *testing.T) {
 
 	pageRequest := pagination.PageParams{Page: page, Size: size}
 	expected := usecase.ListInstitutionsUseCaseResponse{Pagination: pagination.Pagination{}, Items: []usecase.ListInstitutionsUseCaseResponseItem{
-		{CountryId: 1, Name: "Nubank"},
-		{CountryId: 2, Name: "Brazil Bank"},
+		{Id: 1, Name: "Nubank"},
+		{Id: 2, Name: "Brazil Bank"},
 	}}
 
 	listUseCase.EXPECT().Run(eCtx.Request().Context(), pageRequest).Return(expected)

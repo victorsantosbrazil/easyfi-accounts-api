@@ -1,12 +1,9 @@
 package app
 
 import (
-	"log"
-
 	"github.com/labstack/echo/v4"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/database"
 )
 
 type App struct {
@@ -22,17 +19,5 @@ func (a *App) Start() {
 
 func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
 	a := &App{echo: e, config: cfg, controllers: controllers}
-	// a.migrationUp()
 	return a
-}
-
-func (a *App) migrationUp() {
-	migration, err := database.NewMigration(a.config.Database)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if migration.Up(); err != nil {
-		log.Fatal(err)
-	}
 }

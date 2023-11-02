@@ -21,8 +21,8 @@ func TestRun(t *testing.T) {
 	pageRequest := pagination.PageParams{Page: 1}
 
 	institutions := []entity.Institution{
-		{CountryId: 1, Name: "Brazil bank"},
-		{CountryId: 2, Name: "Bank of America"},
+		{Id: 1, Name: "Brazil bank"},
+		{Id: 2, Name: "Bank of America"},
 	}
 
 	pageInstitutions := repository.PageInstitution{
@@ -38,8 +38,8 @@ func TestRun(t *testing.T) {
 
 	for i, institution := range institutions {
 		expectedItems[i] = ListInstitutionsUseCaseResponseItem{
-			CountryId: institution.CountryId,
-			Name:      institution.Name,
+			Id:   institution.Id,
+			Name: institution.Name,
 		}
 	}
 
