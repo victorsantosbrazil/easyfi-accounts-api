@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose -f ./dev/docker/docker-compose.yml stop
+docker-compose -f ./dev/docker/docker-compose.yml down

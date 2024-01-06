@@ -18,6 +18,6 @@ func (a *App) Start() {
 }
 
 func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
-	a := &App{echo: e, config: cfg, controllers: controllers}
-	return a
+	app := &App{echo: e, config: cfg, controllers: controllers}
+	return app
 }

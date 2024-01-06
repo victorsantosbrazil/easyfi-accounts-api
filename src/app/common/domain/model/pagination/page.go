@@ -2,12 +2,12 @@ package pagination
 
 type (
 	Pagination struct {
-		Page       int  `json:"page"`
-		Size       int  `json:"size"`
-		TotalPages int  `json:"totalPages"`
-		Total      int  `json:"total"`
-		Last       bool `json:"last"`
-		First      bool `json:"first"`
+		Page          int  `json:"page"`
+		Size          int  `json:"size"`
+		TotalPages    int  `json:"totalPages"`
+		TotalElements int  `json:"totalElements"`
+		Last          bool `json:"last"`
+		First         bool `json:"first"`
 	}
 
 	Page[T any] struct {

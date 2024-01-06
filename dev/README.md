@@ -41,13 +41,19 @@ To start local environment, run:
 ./dev/scripts/start-local-env.sh
 ```
 
+### Setup
+To setup local environment, run:
+
+```
+./dev/scripts/setup-local-env.sh
+```
+
 ### Stop
 To stop local environment, run:
 
 ```
 ./dev/scripts/stop-local-env.sh
 ```
-
 
 ## 🚩 Vulnerabilities check
 To check for vulnerabilities in dependencies, run:

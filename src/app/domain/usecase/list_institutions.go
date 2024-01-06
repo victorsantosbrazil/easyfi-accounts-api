@@ -13,20 +13,25 @@ import (
 type ListInstitutionsUseCaseResponse pagination.Page[ListInstitutionsUseCaseResponseItem]
 
 type ListInstitutionsUseCaseResponseItem struct {
-	Id   int    `json:"countryId"`
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 }
 
 type ListInstitutionsUseCase interface {
-	Run(ctx context.Context, pageParams pagination.PageParams) ListInstitutionsUseCaseResponse
+	Run(ctx context.Context, pageParams pagination.PageParams) (ListInstitutionsUseCaseResponse, error)
 }
 
 type listInstitutionsUseCaseImpl struct {
 	institutionRepository repository.InstitutionRepository
 }
 
-func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagination.PageParams) ListInstitutionsUseCaseResponse {
-	pageInstitutions := u.institutionRepository.GetPage(ctx, pageParams)
+func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagination.PageParams) (ListInstitutionsUseCaseResponse, error) {
+	pageInstitutions, err := u.institutionRepository.GetPage(ctx, pageParams)
+
+	if err != nil {
+		return ListInstitutionsUseCaseResponse{}, err
+	}
+
 	page := pagination.MapPage(pageInstitutions, func(institution entity.Institution) ListInstitutionsUseCaseResponseItem {
 		return ListInstitutionsUseCaseResponseItem{
 			Id:   institution.Id,
@@ -34,7 +39,7 @@ func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagina
 		}
 	})
 
-	return ListInstitutionsUseCaseResponse(page)
+	return ListInstitutionsUseCaseResponse(page), nil
 }
 
 func NewListInstitutionsUseCase(institutionRepository repository.InstitutionRepository) ListInstitutionsUseCase {

@@ -21,7 +21,11 @@ func (c *InstitutionController) list(eCtx echo.Context) error {
 		return err
 	}
 
-	response := c.listUseCase.Run(ctx, pageParams)
+	response, err := c.listUseCase.Run(ctx, pageParams)
+	if err != nil {
+		return err
+	}
+
 	return eCtx.JSON(200, response)
 }
 

@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 	"github.com/labstack/echo/v4"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/dao"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/repository"
@@ -27,6 +28,7 @@ func NewApp() (*App, error) {
 
 	wire.Build(
 		config.ReadConfig,
+		GetDataSourcesConfig,
 		echo.New,
 		DAOSet,
 		RepositorySet,
@@ -37,4 +39,8 @@ func NewApp() (*App, error) {
 	)
 
 	return &App{}, nil
+}
+
+func GetDataSourcesConfig(cfg *config.Config) *datasource.DataSourcesConfig {
+	return cfg.DataSources
 }

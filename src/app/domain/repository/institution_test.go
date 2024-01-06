@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -17,31 +18,47 @@ func TestGetPage(t *testing.T) {
 	institutionDAO := dao.NewMockInstitutionDAO(mockCtrl)
 	institutionRepository := NewInstitutionRepository(institutionDAO)
 
-	ctx := context.Background()
-	pageParams := pagination.PageParams{
-		Page: 1,
-	}
-
-	pageInstitutionData := dao.PageInstitutionData{
-		Pagination: pagination.Pagination{
-			Page: pageParams.Page,
-		},
-		Items: []dao.InstitutionData{
-			{Id: 1, Name: "Brazil Bank"},
-		},
-	}
-
-	institutionDAO.EXPECT().GetPage(ctx, pageParams).Return(pageInstitutionData)
-
-	expected := pagination.MapPage(pageInstitutionData, func(data dao.InstitutionData) entity.Institution {
-		return entity.Institution{
-			Id:   data.Id,
-			Name: data.Name,
+	t.Run("returns page of banks", func(t *testing.T) {
+		ctx := context.Background()
+		pageParams := pagination.PageParams{
+			Page: 1,
 		}
+
+		pageInstitutionData := dao.PageInstitutionData{
+			Pagination: pagination.Pagination{
+				Page: pageParams.Page,
+			},
+			Items: []dao.InstitutionData{
+				{Id: 1, Name: "Brazil Bank"},
+			},
+		}
+
+		institutionDAO.EXPECT().GetPage(ctx, pageParams).Return(pageInstitutionData, nil)
+
+		expected := pagination.MapPage(pageInstitutionData, func(data dao.InstitutionData) entity.Institution {
+			return entity.Institution{
+				Id:   data.Id,
+				Name: data.Name,
+			}
+		})
+
+		actual, _ := institutionRepository.GetPage(ctx, pageParams)
+
+		assert.Equal(t, expected, actual)
 	})
 
-	actual := institutionRepository.GetPage(ctx, pageParams)
+	t.Run("returns error when failed to load data", func(t *testing.T) {
+		ctx := context.Background()
+		pageParams := pagination.PageParams{
+			Page: 1,
+		}
 
-	assert.Equal(t, expected, actual)
+		expectedErr := errors.New("error")
+		institutionDAO.EXPECT().GetPage(ctx, pageParams).Return(dao.PageInstitutionData{}, expectedErr)
+
+		_, actualErr := institutionRepository.GetPage(ctx, pageParams)
+
+		assert.ErrorIs(t, expectedErr, actualErr)
+	})
 
 }
