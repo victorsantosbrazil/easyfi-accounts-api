@@ -61,7 +61,6 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 		if err != nil {
 			return PageInstitutionData{}, datasource.NewScanRowError(err.Error())
 		}
-
 		institutions = append(institutions, institution)
 	}
 

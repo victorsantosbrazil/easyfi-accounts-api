@@ -33,16 +33,26 @@ func setupTestEnvironment() (cfg *config.Config, tearDown func() error) {
 	}
 
 	tearDownMysql := integration.RunMysql(mysqlConfig)
-	setupMysqlDB()
+
+	err = setupMysqlDB(dsConfig)
+	if err != nil {
+		tearDownMysql()
+		log.Fatal(err)
+	}
+
 	return cfg, tearDownMysql
 
 }
 
-func setupMysqlDB() {
-	cmd := exec.Command("bash", "./../../../dev/scripts/mysql/setup-database.sh")
-	if err := cmd.Run(); err != nil {
-		log.Fatal(err)
-	}
+func setupMysqlDB(dsConfig *datasource.MysqlDataSourceConfig) error {
+	cmd := exec.Command(
+		"bash",
+		"./../../../dev/scripts/mysql/setup-database.sh",
+		"-u", dsConfig.User,
+		"-p", dsConfig.Password,
+		"-d", dsConfig.Database,
+	)
+	return cmd.Run()
 }
 
 func TestCount(t *testing.T) {

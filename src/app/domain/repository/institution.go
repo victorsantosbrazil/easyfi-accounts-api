@@ -34,7 +34,6 @@ func (r *institutionRepositoryImpl) GetPage(ctx context.Context, pageParams pagi
 		}
 	})
 	return PageInstitution(page), nil
-
 }
 
 func NewInstitutionRepository(institutionDAO dao.InstitutionDAO) InstitutionRepository {
