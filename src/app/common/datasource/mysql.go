@@ -9,11 +9,16 @@ type (
 	MysqlDataSourcesConfig map[string]*MysqlDataSourceConfig
 
 	MysqlDataSourceConfig struct {
-		Host     string `yaml:"host"`
-		Port     int    `yaml:"port"`
-		User     string `yaml:"user"`
-		Password string `yaml:"password"`
-		Database string `yaml:"database"`
+		Host      string                          `yaml:"host"`
+		Port      int                             `yaml:"port"`
+		User      string                          `yaml:"user"`
+		Password  string                          `yaml:"password"`
+		Database  string                          `yaml:"database"`
+		Migration *MysqlDataSourceMigrationConfig `yaml:"migration"`
+	}
+
+	MysqlDataSourceMigrationConfig struct {
+		Source string `yaml:"source"`
 	}
 )
 

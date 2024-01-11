@@ -55,5 +55,5 @@ The following tools were used to build this project:
 * [Echo v4](https://echo.labstack.com/)
 * [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
 * [gomock](https://github.com/golang/mock)
-* [migrate](https://github.com/golang-migrate/migrate)
+* [go-migrate](https://github.com/golang-migrate/migrate)
 * [wire](https://github.com/google/wire)

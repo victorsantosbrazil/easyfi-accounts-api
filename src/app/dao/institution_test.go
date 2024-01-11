@@ -5,12 +5,12 @@ import (
 	"database/sql"
 	"errors"
 	"log"
-	"os/exec"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource/migration"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model/pagination"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/testing/integration"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
@@ -25,7 +25,14 @@ func setupTestEnvironment() (cfg *config.Config, tearDown func() error) {
 		log.Fatal(err)
 	}
 
-	dsConfig, _ := cfg.DataSources.Mysql.Get("db")
+	dsConfig, err := cfg.DataSources.Mysql.Get("db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dsConfig.Migration = &datasource.MysqlDataSourceMigrationConfig{
+		Source: "file://../../../database/schema",
+	}
 
 	mysqlConfig := integration.MysqlConfig{
 		RootPassword: "root",
@@ -45,14 +52,11 @@ func setupTestEnvironment() (cfg *config.Config, tearDown func() error) {
 }
 
 func setupMysqlDB(dsConfig *datasource.MysqlDataSourceConfig) error {
-	cmd := exec.Command(
-		"bash",
-		"./../../../dev/scripts/mysql/setup-database.sh",
-		"-u", dsConfig.User,
-		"-p", dsConfig.Password,
-		"-d", dsConfig.Database,
-	)
-	return cmd.Run()
+	m, err := migration.NewMysqlMigration(dsConfig)
+	if err != nil {
+		return err
+	}
+	return m.Up()
 }
 
 func TestCount(t *testing.T) {

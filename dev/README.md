@@ -23,6 +23,7 @@
 * [golangci-lint](https://golangci-lint.run/)
 * [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck)
 * [gomock](https://github.com/golang/mock)
+* [go-migrate](https://github.com/golang-migrate/migrate)
 
 ### Instalation
 
