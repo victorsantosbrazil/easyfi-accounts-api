@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"strconv"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
@@ -13,41 +14,52 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource/migration"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model/pagination"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/testing/integration"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 )
 
 const countQueryRegex = `SELECT COUNT\(id\) FROM ` + _TABLE_NAME
 const getPageQueryRegex = `SELECT id, name FROM ` + _TABLE_NAME + ` ORDER BY name ASC LIMIT [0-9]+ OFFSET [0-9]+`
 
-func setupTestEnvironment() (cfg *config.Config, tearDown func() error) {
-	cfg, err := config.ReadProfileConfig("test")
-	if err != nil {
-		log.Fatal(err)
+func setupTestEnvironment() (datasourcesConfig *datasource.DataSourcesConfig, tearDown func() error) {
+	dbConfig := &datasource.MysqlDataSourceConfig{
+		Host:     "localhost",
+		User:     "testuser",
+		Password: "testpasswd",
+		Database: "institution",
+		Migration: &datasource.MysqlDataSourceMigrationConfig{
+			Source: "file://../../../database/schema",
+		},
 	}
 
-	dsConfig, err := cfg.DataSources.Mysql.Get("db")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dsConfig.Migration = &datasource.MysqlDataSourceMigrationConfig{
-		Source: "file://../../../database/schema",
+	datasourcesConfig = &datasource.DataSourcesConfig{
+		Mysql: &datasource.MysqlDataSourcesConfig{
+			"db": dbConfig,
+		},
 	}
 
 	mysqlConfig := integration.MysqlConfig{
 		RootPassword: "root",
-		Database:     dsConfig.Database,
+		User:         dbConfig.User,
+		Password:     dbConfig.Password,
+		Database:     dbConfig.Database,
 	}
 
-	tearDownMysql := integration.RunMysql(mysqlConfig)
+	mysqlResource := integration.RunMysql(mysqlConfig)
 
-	err = setupMysqlDB(dsConfig)
+	port, err := strconv.Atoi(mysqlResource.GetPort("3306/tcp"))
 	if err != nil {
-		tearDownMysql()
+		mysqlResource.Stop()
 		log.Fatal(err)
 	}
 
-	return cfg, tearDownMysql
+	dbConfig.Port = port
+
+	err = setupMysqlDB(dbConfig)
+	if err != nil {
+		mysqlResource.Stop()
+		log.Fatal(err)
+	}
+
+	return datasourcesConfig, mysqlResource.Stop
 
 }
 
@@ -62,10 +74,9 @@ func setupMysqlDB(dsConfig *datasource.MysqlDataSourceConfig) error {
 func TestCount(t *testing.T) {
 
 	t.Run("should count elements inserted", func(t *testing.T) {
-		cfg, tearDownTestEnvironment := setupTestEnvironment()
+		dataSourcesCfg, tearDownTestEnvironment := setupTestEnvironment()
 		defer tearDownTestEnvironment()
 
-		dataSourcesCfg := cfg.DataSources
 		dbConfig, err := dataSourcesCfg.Mysql.Get("db")
 		if err != nil {
 			t.Fatal(err)
@@ -116,10 +127,9 @@ func TestCount(t *testing.T) {
 
 func TestGetPage(t *testing.T) {
 	t.Run("should return page with institutions", func(t *testing.T) {
-		cfg, tearDownTestEnvironment := setupTestEnvironment()
+		dataSourcesCfg, tearDownTestEnvironment := setupTestEnvironment()
 		defer tearDownTestEnvironment()
 
-		dataSourcesCfg := cfg.DataSources
 		dbConfig, err := dataSourcesCfg.Mysql.Get("db")
 
 		if err != nil {

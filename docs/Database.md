@@ -1,12 +1,12 @@
-# Databases
+# Database
 
 ## Table of Contents
 <!--ts-->
-   * [Technologies](#technology)
+   * [Technology](#technology)
    * [Entity Relationship Model](#entity-relationship-model)
 <!--te-->   
 
-## Technologies
+## Technology
 * [MySQL](https://www.mysql.com/)
 
 ## Entity Relationship Model

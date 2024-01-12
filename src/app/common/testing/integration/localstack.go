@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/ory/dockertest/v3"
-	"github.com/ory/dockertest/v3/docker"
 )
 
 type (
@@ -21,7 +20,7 @@ type (
 	}
 )
 
-func RunLocalstack(config LocalstackConfig) (tearDownFn func() error) {
+func RunLocalstack(config LocalstackConfig) *Container {
 	pool, err := dockertest.NewPool("")
 	if err != nil {
 		log.Fatalf("Could not construct pool: %s", err)
@@ -34,9 +33,6 @@ func RunLocalstack(config LocalstackConfig) (tearDownFn func() error) {
 
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
 		Repository: "localstack/localstack",
-		PortBindings: map[docker.Port][]docker.PortBinding{
-			"4566/tcp": {{HostIP: "localhost", HostPort: "4566/tcp"}},
-		},
 		Env: []string{
 			"DOCKER_HOST=unix:///var/run/docker.sock",
 			fmt.Sprintf("AWS_ACCESS_KEY_ID=%s", config.Aws.AccessKey),
@@ -52,8 +48,9 @@ func RunLocalstack(config LocalstackConfig) (tearDownFn func() error) {
 		log.Fatalf("Could not start resource: %s", err)
 	}
 
-	tearDownFn = func() error {
-		return pool.Purge(resource)
+	container := &Container{
+		pool:     pool,
+		resource: resource,
 	}
 
 	err = pool.Retry(func() error {
@@ -62,9 +59,9 @@ func RunLocalstack(config LocalstackConfig) (tearDownFn func() error) {
 	})
 
 	if err != nil {
-		tearDownFn()
+		container.Stop()
 		log.Fatalf("Could not connect to localstack: %s", err)
 	}
 
-	return tearDownFn
+	return container
 }

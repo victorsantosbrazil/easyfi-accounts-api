@@ -8,7 +8,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ory/dockertest/v3"
-	"github.com/ory/dockertest/v3/docker"
 )
 
 type MysqlConfig struct {
@@ -18,7 +17,7 @@ type MysqlConfig struct {
 	Database     string
 }
 
-func RunMysql(config MysqlConfig) (tearDownFn func() error) {
+func RunMysql(config MysqlConfig) Container {
 	var db *sql.DB
 
 	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
@@ -38,24 +37,23 @@ func RunMysql(config MysqlConfig) (tearDownFn func() error) {
 	// pulls an image, creates a container based on it and runs it
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
 		Repository: "mysql",
-		PortBindings: map[docker.Port][]docker.PortBinding{
-			"3306/tcp": {{HostIP: "localhost", HostPort: "3306/tcp"}},
-		},
-		Env: env,
+		Env:        env,
 	})
 
 	if err != nil {
 		log.Fatalf("Could not start resource: %s", err)
 	}
 
-	tearDownFn = func() error {
-		return pool.Purge(resource)
+	container := Container{
+		pool:     pool,
+		resource: resource,
 	}
 
 	// exponential backoff-retry, because the application in the container might not be ready to accept connections yet
 	if err := pool.Retry(func() error {
 		var err error
-		db, err = sql.Open("mysql", "root:root@(localhost:3306)/mysql")
+		port := resource.GetPort("3306/tcp")
+		db, err = sql.Open("mysql", fmt.Sprintf("root:root@(localhost:%s)/%s", port, config.Database))
 		if err != nil {
 			return errors.New("Fail to open connection to mysql instance")
 		}
@@ -68,11 +66,11 @@ func RunMysql(config MysqlConfig) (tearDownFn func() error) {
 		return nil
 
 	}); err != nil {
-		tearDownFn()
+		container.Stop()
 		log.Fatalf("Could not connect to database: %s", err)
 	}
 
-	return tearDownFn
+	return container
 }
 
 func getEnv(config MysqlConfig) []string {
