@@ -7,4 +7,4 @@ datasources:
       password: "root"
       database: "institution"
       migration: 
-        source: "file://./database/schema"
+        source: "file://./database/institution/schema"

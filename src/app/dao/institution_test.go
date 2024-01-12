@@ -26,7 +26,7 @@ func setupTestEnvironment() (datasourcesConfig *datasource.DataSourcesConfig, te
 		Password: "testpasswd",
 		Database: "institution",
 		Migration: &datasource.MysqlDataSourceMigrationConfig{
-			Source: "file://../../../database/schema",
+			Source: "file://../../../database/institution/schema",
 		},
 	}
 
