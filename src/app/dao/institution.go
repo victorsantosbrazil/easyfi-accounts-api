@@ -72,8 +72,6 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 			Size:          pageParams.Size,
 			TotalPages:    totalPages,
 			TotalElements: totalElements,
-			First:         pageParams.Page == 1,
-			Last:          pageParams.Page == totalPages,
 		},
 		Items: institutions,
 	}, nil

@@ -166,8 +166,6 @@ func TestGetPage(t *testing.T) {
 				Size:          pageParams.Size,
 				TotalPages:    2,
 				TotalElements: len(institutions),
-				First:         true,
-				Last:          false,
 			},
 			Items: []InstitutionData{ // will return institutions sorted by name
 				institutions[1], institutions[3], institutions[4],
