@@ -166,15 +166,15 @@ func TestGetPage(t *testing.T) {
 				Size:          pageParams.Size,
 				TotalPages:    2,
 				TotalElements: len(institutions),
-				First:         false,
-				Last:          true,
+				First:         true,
+				Last:          false,
 			},
 			Items: []InstitutionData{ // will return institutions sorted by name
-				institutions[0], institutions[2],
+				institutions[1], institutions[3], institutions[4],
 			},
 		}
 
-		assert.Equal(t, actualPage, expectedPage)
+		assert.Equal(t, expectedPage, actualPage)
 	})
 
 	t.Run("should return error when count fails", func(t *testing.T) {

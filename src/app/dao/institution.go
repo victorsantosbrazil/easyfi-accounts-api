@@ -39,7 +39,7 @@ func (d *institutionDAOImpl) Count(ctx context.Context) (int, error) {
 }
 
 func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.PageParams) (PageInstitutionData, error) {
-	offset := pageParams.Page * pageParams.Size
+	offset := (pageParams.Page - 1) * pageParams.Size
 	query := fmt.Sprintf("SELECT id, name FROM %s ORDER BY name ASC LIMIT %d OFFSET %d", _TABLE_NAME, pageParams.Size, offset)
 
 	totalElements, err := d.Count(ctx)
@@ -72,8 +72,8 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 			Size:          pageParams.Size,
 			TotalPages:    totalPages,
 			TotalElements: totalElements,
-			First:         pageParams.Page == 0,
-			Last:          pageParams.Page+1 == totalPages,
+			First:         pageParams.Page == 1,
+			Last:          pageParams.Page == totalPages,
 		},
 		Items: institutions,
 	}, nil

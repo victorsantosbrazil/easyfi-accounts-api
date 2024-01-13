@@ -32,7 +32,7 @@ type (
 func NewPageParams(urlValues url.Values) (pageParams PageParams, err error) {
 	queryParams := QueryParams(urlValues)
 
-	pageParams.Page, err = queryParams.GetIntOrDefault("page", 0)
+	pageParams.Page, err = queryParams.GetIntOrDefault("page", 1)
 	if err != nil {
 		return pageParams, err
 	}

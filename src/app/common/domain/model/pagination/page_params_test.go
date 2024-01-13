@@ -40,6 +40,7 @@ func TestNewPageParams(t *testing.T) {
 		urlValues := url.Values{}
 
 		expected := PageParams{
+			Page: 1,
 			Size: DEFAULT_PAGE_SIZE,
 		}
 
