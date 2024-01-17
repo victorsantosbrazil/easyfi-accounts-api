@@ -42,13 +42,6 @@ To start local environment, run:
 ./dev/scripts/start-local-env.sh
 ```
 
-### Setup
-To setup local environment, run:
-
-```
-./dev/scripts/setup-local-env.sh
-```
-
 ### Stop
 To stop local environment, run:
 
