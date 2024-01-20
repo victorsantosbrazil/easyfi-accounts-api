@@ -1,0 +1,10 @@
+datasources: 
+  mysql:
+    db:
+      host: "localhost"
+      port: 3306
+      user: "devuser"
+      password: "devpasswd"
+      database: "institution"
+      migration: 
+        source: "file://./database/institution/schema"

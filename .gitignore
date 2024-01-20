@@ -1,3 +1,6 @@
-dev/docker/data/
-
+# Generated files
 wire_gen.go
+mock_*.go
+
+# Others
+.devcontainer/
