@@ -45,13 +45,14 @@ func TestRun(t *testing.T) {
 			}
 		}
 
+		actual, err := usecase.Run(ctx, pageRequest)
 		expected := ListInstitutionsUseCaseResponse{Pagination: expectedPagination, Items: expectedItems}
-		actual, _ := usecase.Run(ctx, pageRequest)
-
-		assert.Equal(t, expected, actual)
+		if assert.NoError(t, err) {
+			assert.Equal(t, expected, actual)
+		}
 	})
 
-	t.Run("returns error when fail to get page of institutions", func(t *testing.T) {
+	t.Run("returns error when fails to get page of institutions", func(t *testing.T) {
 		ctx := context.Background()
 		pageRequest := pagination.PageParams{Page: 1}
 
@@ -62,8 +63,6 @@ func TestRun(t *testing.T) {
 
 		_, actualErr := usecase.Run(ctx, pageRequest)
 
-		assert.ErrorIs(t, expectedErr, actualErr)
-
+		assert.ErrorIs(t, actualErr, expectedErr)
 	})
-
 }

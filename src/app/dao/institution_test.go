@@ -101,11 +101,12 @@ func TestCount(t *testing.T) {
 		}
 
 		actualCount, err := institutionsDAO.Count(context.Background())
-		assert.NoError(t, err)
-		assert.Equal(t, len(institutions), actualCount)
+		if assert.NoError(t, err) {
+			assert.Equal(t, len(institutions), actualCount)
+		}
 	})
 
-	t.Run("when scanning query result fails then return error", func(t *testing.T) {
+	t.Run("should return error when row scan fails", func(t *testing.T) {
 		db, dbmock, err := sqlmock.New()
 		if err != nil {
 			t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -157,21 +158,21 @@ func TestGetPage(t *testing.T) {
 		pageParams := pagination.PageParams{Size: 3, Page: 1}
 		actualPage, err := institutionsDAO.GetPage(context.Background(), pageParams)
 
-		assert.NoError(t, err)
+		if assert.NoError(t, err) {
+			expectedPage := PageInstitutionData{
+				Pagination: pagination.Pagination{
+					Page:          pageParams.Page,
+					Size:          pageParams.Size,
+					TotalPages:    2,
+					TotalElements: len(institutions),
+				},
+				Items: []InstitutionData{ // will return institutions sorted by name
+					institutions[1], institutions[3], institutions[4],
+				},
+			}
 
-		expectedPage := PageInstitutionData{
-			Pagination: pagination.Pagination{
-				Page:          pageParams.Page,
-				Size:          pageParams.Size,
-				TotalPages:    2,
-				TotalElements: len(institutions),
-			},
-			Items: []InstitutionData{ // will return institutions sorted by name
-				institutions[1], institutions[3], institutions[4],
-			},
+			assert.Equal(t, expectedPage, actualPage)
 		}
-
-		assert.Equal(t, expectedPage, actualPage)
 	})
 
 	t.Run("should return error when count fails", func(t *testing.T) {
@@ -215,7 +216,7 @@ func TestGetPage(t *testing.T) {
 		assert.ErrorIs(t, actualErr, expectedErr)
 	})
 
-	t.Run("should return error when row scanning fails", func(t *testing.T) {
+	t.Run("should return error when row scan fails", func(t *testing.T) {
 		db, dbmock, err := sqlmock.New()
 		if err != nil {
 			t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)

@@ -48,9 +48,10 @@ func TestListInstitutions(t *testing.T) {
 		if assert.NoError(t, institutionController.list(eCtx)) {
 			var actual usecase.ListInstitutionsUseCaseResponse
 			err := json.NewDecoder(rec.Body).Decode(&actual)
-			assert.NoError(t, err)
-			assert.Equal(t, http.StatusOK, rec.Code)
-			assert.Equal(t, expected, actual)
+			if assert.NoError(t, err) {
+				assert.Equal(t, http.StatusOK, rec.Code)
+				assert.Equal(t, expected, actual)
+			}
 		}
 	})
 

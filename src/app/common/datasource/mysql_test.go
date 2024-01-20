@@ -22,8 +22,9 @@ func TestGetMysqlDataSourceConfig(t *testing.T) {
 		}
 
 		result, err := dssConfig.Get("db")
-		assert.NoError(t, err)
-		assert.Equal(t, expected, result)
+		if assert.NoError(t, err) {
+			assert.Equal(t, expected, result)
+		}
 	})
 
 	t.Run("should throw error when datasource does not exists by key", func(t *testing.T) {

@@ -42,11 +42,14 @@ func TestGetPage(t *testing.T) {
 			}
 		})
 
-		actual, _ := institutionRepository.GetPage(ctx, pageParams)
-		assert.Equal(t, expected, actual)
+		actual, err := institutionRepository.GetPage(ctx, pageParams)
+
+		if assert.NoError(t, err) {
+			assert.Equal(t, expected, actual)
+		}
 	})
 
-	t.Run("returns error when failed to load data", func(t *testing.T) {
+	t.Run("returns error when fails to get page from dao", func(t *testing.T) {
 		ctx := context.Background()
 		pageParams := pagination.PageParams{
 			Page: 1,
@@ -57,7 +60,7 @@ func TestGetPage(t *testing.T) {
 
 		_, actualErr := institutionRepository.GetPage(ctx, pageParams)
 
-		assert.ErrorIs(t, expectedErr, actualErr)
+		assert.ErrorIs(t, actualErr, expectedErr)
 	})
 
 }
