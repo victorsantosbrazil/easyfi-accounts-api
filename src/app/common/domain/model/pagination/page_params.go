@@ -42,12 +42,12 @@ func NewPageParams(urlValues url.Values) (pageParams PageParams, err error) {
 		return pageParams, err
 	}
 
-	pageParams.Sorts, err = newPageParamsSorts(queryParams)
+	pageParams.Sorts, err = getSorts(queryParams)
 
 	return pageParams, err
 }
 
-func newPageParamsSorts(queryParams QueryParams) (sorts []Sort, err error) {
+func getSorts(queryParams QueryParams) (sorts []Sort, err error) {
 	sortStrings := queryParams.GetStrings("sort")
 
 	for _, sortString := range sortStrings {

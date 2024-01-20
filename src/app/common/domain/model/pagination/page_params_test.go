@@ -36,7 +36,7 @@ func TestNewPageParams(t *testing.T) {
 		}
 	})
 
-	t.Run("returns PageParams with default values when paging params are not informed", func(t *testing.T) {
+	t.Run("returns PageParams with default values when page params are not informed", func(t *testing.T) {
 		urlValues := url.Values{}
 
 		expected := PageParams{

@@ -156,9 +156,8 @@ func TestGetPage(t *testing.T) {
 
 		pageParams := pagination.PageParams{Size: 3, Page: 1}
 		actualPage, err := institutionsDAO.GetPage(context.Background(), pageParams)
-		if err != nil {
-			t.Fatalf("got err when get page: %s", err)
-		}
+
+		assert.NoError(t, err)
 
 		expectedPage := PageInstitutionData{
 			Pagination: pagination.Pagination{

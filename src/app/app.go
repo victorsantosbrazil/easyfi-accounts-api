@@ -14,8 +14,8 @@ type App struct {
 }
 
 func (a *App) Start() {
-	addr := a.config.GetAddress()
 	a.setupDatabase()
+	addr := a.config.GetAddress()
 	a.echo.Logger.Fatal(a.echo.Start(addr))
 }
 
@@ -34,6 +34,5 @@ func (a *App) setupDatabase() {
 }
 
 func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
-	app := &App{echo: e, config: cfg, controllers: controllers}
-	return app
+	return &App{echo: e, config: cfg, controllers: controllers}
 }

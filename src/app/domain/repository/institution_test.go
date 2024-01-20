@@ -43,7 +43,6 @@ func TestGetPage(t *testing.T) {
 		})
 
 		actual, _ := institutionRepository.GetPage(ctx, pageParams)
-
 		assert.Equal(t, expected, actual)
 	})
 

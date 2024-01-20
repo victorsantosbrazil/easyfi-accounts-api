@@ -27,7 +27,7 @@
 
 ### Instalation
 
-To install all tools, run:
+To install dev tools, run:
 
 ```
 ./dev/scripts/install-dev-tools.sh

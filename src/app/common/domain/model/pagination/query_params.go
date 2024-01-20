@@ -12,7 +12,6 @@ func (p QueryParams) GetString(key string) string {
 	if len(p[key]) == 0 {
 		return ""
 	}
-
 	return p[key][0]
 }
 

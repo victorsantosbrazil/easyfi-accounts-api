@@ -20,13 +20,11 @@ type MysqlConfig struct {
 func RunMysql(config MysqlConfig) Container {
 	var db *sql.DB
 
-	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
 	pool, err := dockertest.NewPool("")
 	if err != nil {
 		log.Fatalf("Could not construct pool: %s", err)
 	}
 
-	// uses pool to try to connect to Docker
 	err = pool.Client.Ping()
 	if err != nil {
 		log.Fatalf("Could not connect to Docker: %s", err)
@@ -34,7 +32,6 @@ func RunMysql(config MysqlConfig) Container {
 
 	env := getEnv(config)
 
-	// pulls an image, creates a container based on it and runs it
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
 		Repository: "mysql",
 		Env:        env,
@@ -49,8 +46,9 @@ func RunMysql(config MysqlConfig) Container {
 		resource: resource,
 	}
 
-	// exponential backoff-retry, because the application in the container might not be ready to accept connections yet
-	if err := pool.Retry(func() error {
+	// exponential backoff-retry, because the application in the container might not be ready
+	// to accept connections yet
+	err = pool.Retry(func() error {
 		var err error
 		port := resource.GetPort("3306/tcp")
 		db, err = sql.Open("mysql", fmt.Sprintf("root:root@(localhost:%s)/%s", port, config.Database))
@@ -65,7 +63,9 @@ func RunMysql(config MysqlConfig) Container {
 
 		return nil
 
-	}); err != nil {
+	})
+
+	if err != nil {
 		container.Stop()
 		log.Fatalf("Could not connect to database: %s", err)
 	}

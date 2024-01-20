@@ -15,7 +15,6 @@ type (
 )
 
 func MapPage[M, N any](src Page[M], mapFn func(M) N) Page[N] {
-
 	items := make([]N, len(src.Items))
 
 	for i, item := range src.Items {
@@ -26,5 +25,4 @@ func MapPage[M, N any](src Page[M], mapFn func(M) N) Page[N] {
 		Pagination: src.Pagination,
 		Items:      items,
 	}
-
 }

@@ -53,6 +53,8 @@ func RunLocalstack(config LocalstackConfig) *Container {
 		resource: resource,
 	}
 
+	// exponential backoff-retry, because the application in the container might not be ready
+	// to accept connections yet
 	err = pool.Retry(func() error {
 		_, err = http.Get("http://localhost:4566/_localstack/health")
 		return err

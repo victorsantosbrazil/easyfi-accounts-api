@@ -42,8 +42,14 @@ func TestMysqlDataSourceGetUrl(t *testing.T) {
 		Password: "testpasswd",
 		Database: "testdb",
 	}
-	expected := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.User, config.Password, config.Host, config.Port, config.Database)
+	expected := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s",
+		config.User,
+		config.Password,
+		config.Host,
+		config.Port,
+		config.Database,
+	)
 	actual := config.GetUrl()
 	assert.Equal(t, expected, actual)
-
 }
