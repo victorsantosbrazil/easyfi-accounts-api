@@ -18,6 +18,10 @@ mock:
 test:
 	@echo "Executing tests..."
 	@go test ./src/...
-install: install-dependencies build vulncheck mock test
+doc:
+	@echo "Generating docs..."
+	@go install github.com/swaggo/swag/cmd/swag@latest
+	@swag init -o ./docs/swagger	
+install: install-dependencies build vulncheck mock test doc
 run:
 	@go run main.go

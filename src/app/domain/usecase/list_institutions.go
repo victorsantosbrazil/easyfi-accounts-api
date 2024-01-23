@@ -13,8 +13,8 @@ import (
 type ListInstitutionsUseCaseResponse pagination.Page[ListInstitutionsUseCaseResponseItem]
 
 type ListInstitutionsUseCaseResponseItem struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
+	Id   int    `json:"id" example:"1"`
+	Name string `json:"name" example:"Brazil Bank"`
 }
 
 type ListInstitutionsUseCase interface {

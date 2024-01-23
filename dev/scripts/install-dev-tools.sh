@@ -12,4 +12,7 @@ go install golang.org/x/vuln/cmd/govulncheck@latest || { echo "Error: govulnchec
 echo "Installing mockgen..."
 go install github.com/golang/mock/mockgen@v1.6.0 || { echo "Error: mockgen installation failed"; exit 1; }
 
+echo "Installing go swag..."
+go install github.com/swaggo/swag/cmd/swag@latest || { echo "Error: swag installation failed"; exit 1; }
+
 echo "Dev tools installed successfully."
