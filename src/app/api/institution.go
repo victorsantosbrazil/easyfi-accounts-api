@@ -6,13 +6,20 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/usecase"
 )
 
-const _CONTROLLER_PATH = "/financial-institutions"
+const _CONTROLLER_PATH = "/institutions"
 
 type InstitutionController struct {
 	*echo.Group
 	listUseCase usecase.ListInstitutionsUseCase
 }
 
+// @Tags institutions
+// @Summary list institutions
+// @Router /v1/institutions [get]
+// @Produce json
+// @Param page query int false " "
+// @Param size query int false " "
+// @Success 200 {object} usecase.ListInstitutionsUseCaseResponse
 func (c *InstitutionController) list(eCtx echo.Context) error {
 	ctx := eCtx.Request().Context()
 
