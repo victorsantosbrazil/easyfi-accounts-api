@@ -3,8 +3,6 @@ package pagination
 import (
 	"net/url"
 	"strings"
-
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/exception"
 )
 
 const (
@@ -73,7 +71,7 @@ func newSort(sortString string) (Sort, error) {
 	}
 
 	if order != ORDER_ASC && order != ORDER_DESC {
-		return Sort{}, exception.IllegalArgumentException("sort", sortString)
+		return Sort{}, InvalidPageParam("sort", sortString)
 	}
 
 	sort := Sort{

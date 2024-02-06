@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/exception"
 )
 
 func TestNewPageParams(t *testing.T) {
@@ -59,7 +58,7 @@ func TestNewPageParams(t *testing.T) {
 			param: {value},
 		}
 
-		expectedErr := exception.IllegalArgumentException(param, value)
+		expectedErr := InvalidPageParam(param, value)
 		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
@@ -73,7 +72,7 @@ func TestNewPageParams(t *testing.T) {
 			param: {value},
 		}
 
-		expectedErr := exception.IllegalArgumentException(param, value)
+		expectedErr := InvalidPageParam(param, value)
 		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
@@ -87,7 +86,7 @@ func TestNewPageParams(t *testing.T) {
 			param: {value},
 		}
 
-		expectedErr := exception.IllegalArgumentException(param, value)
+		expectedErr := InvalidPageParam(param, value)
 		_, err := NewPageParams(urlValues)
 
 		assert.Equal(t, expectedErr, err)
