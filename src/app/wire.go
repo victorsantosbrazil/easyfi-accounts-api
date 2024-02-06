@@ -8,9 +8,9 @@ package app
 
 import (
 	"github.com/google/wire"
-	"github.com/labstack/echo/v4"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/echo"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/dao"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/repository"

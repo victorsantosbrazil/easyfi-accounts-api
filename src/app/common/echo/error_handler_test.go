@@ -19,7 +19,7 @@ func TestErrorHandler(t *testing.T) {
 		rec := httptest.NewRecorder()
 		ctx := echo.New().NewContext(req, rec)
 
-		ErrorHandler(err, ctx)
+		HttpErrorHandler(err, ctx)
 
 		var actualErr cmnErrors.ApiError
 		json.NewDecoder(rec.Body).Decode(&actualErr)
@@ -32,7 +32,7 @@ func TestErrorHandler(t *testing.T) {
 		rec := httptest.NewRecorder()
 		ctx := echo.New().NewContext(req, rec)
 
-		ErrorHandler(err, ctx)
+		HttpErrorHandler(err, ctx)
 
 		expectedErr := cmnErrors.InternalServerError(_INTERNAL_SERVER_ERROR)
 		var actualErr cmnErrors.ApiError

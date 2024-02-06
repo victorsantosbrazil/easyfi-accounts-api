@@ -2,10 +2,8 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
-	echoSwagger "github.com/swaggo/echo-swagger"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource/migration"
-	cmnEcho "github.com/victorsantosbrazil/financial-institutions-api/src/app/common/echo"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 )
 
@@ -36,11 +34,5 @@ func (a *App) setupDatabase() {
 }
 
 func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
-	serveSwagger(e)
-	e.HTTPErrorHandler = cmnEcho.ErrorHandler
 	return &App{echo: e, config: cfg, controllers: controllers}
-}
-
-func serveSwagger(e *echo.Echo) {
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
