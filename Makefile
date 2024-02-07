@@ -10,7 +10,7 @@ build:
 vulncheck: 
 	@echo "Checking for vulnerabilities..."
 	@go install golang.org/x/vuln/cmd/govulncheck@latest
-	@govulncheck ./...
+	@govulncheck -show verbose ./...
 mock:
 	@echo "Creating mocks for tests..."
 	@go install github.com/golang/mock/mockgen@v1.6.0

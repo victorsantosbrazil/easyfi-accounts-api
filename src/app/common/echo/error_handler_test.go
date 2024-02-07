@@ -13,7 +13,7 @@ import (
 
 func TestErrorHandler(t *testing.T) {
 
-	t.Run("should just return api errors", func(t *testing.T) {
+	t.Run("should just return api errors when handling api errors", func(t *testing.T) {
 		err := cmnErrors.BadRequestError("bad request")
 		req := httptest.NewRequest("GET", "/", nil)
 		rec := httptest.NewRecorder()
@@ -34,10 +34,37 @@ func TestErrorHandler(t *testing.T) {
 
 		HttpErrorHandler(err, ctx)
 
-		expectedErr := cmnErrors.InternalServerError(_INTERNAL_SERVER_ERROR)
+		expectedErr := cmnErrors.InternalServerError()
 		var actualErr cmnErrors.ApiError
 		json.NewDecoder(rec.Body).Decode(&actualErr)
 		assert.Equal(t, expectedErr, actualErr)
 	})
 
+	t.Run("should return not found error when handling echo http errors with status codes not found", func(t *testing.T) {
+		err := echo.NewHTTPError(404, "not found error")
+		req := httptest.NewRequest("GET", "/", nil)
+		rec := httptest.NewRecorder()
+		ctx := echo.New().NewContext(req, rec)
+
+		HttpErrorHandler(err, ctx)
+
+		expectedErr := cmnErrors.NotFoundError(_NOT_FOUND_ERROR)
+		var actualErr cmnErrors.ApiError
+		json.NewDecoder(rec.Body).Decode(&actualErr)
+		assert.Equal(t, expectedErr, actualErr)
+	})
+
+	t.Run("should return internal server error when handling echo http errors with status codes not handled", func(t *testing.T) {
+		err := echo.NewHTTPError(500, "generic error")
+		req := httptest.NewRequest("GET", "/", nil)
+		rec := httptest.NewRecorder()
+		ctx := echo.New().NewContext(req, rec)
+
+		HttpErrorHandler(err, ctx)
+
+		expectedErr := cmnErrors.InternalServerError()
+		var actualErr cmnErrors.ApiError
+		json.NewDecoder(rec.Body).Decode(&actualErr)
+		assert.Equal(t, expectedErr, actualErr)
+	})
 }

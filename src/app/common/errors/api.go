@@ -2,6 +2,10 @@ package errors
 
 import "net/http"
 
+const (
+	API_ERROR_TYPE = "api_error"
+)
+
 type ApiError struct {
 	Type   string `json:"type"`
 	Title  string `json:"title"`
@@ -15,18 +19,27 @@ func (e ApiError) Error() string {
 
 func BadRequestError(detail string) ApiError {
 	return ApiError{
-		Type:   "bad_request",
-		Title:  "Bad Request",
+		Type:   API_ERROR_TYPE,
+		Title:  "Bad request",
 		Detail: detail,
 		Status: http.StatusBadRequest,
 	}
 }
 
-func InternalServerError(detail string) ApiError {
+func NotFoundError(detail string) ApiError {
 	return ApiError{
-		Type:   "internal_server",
-		Title:  "Internal Server Error",
+		Type:   API_ERROR_TYPE,
+		Title:  "Not found",
 		Detail: detail,
+		Status: http.StatusNotFound,
+	}
+}
+
+func InternalServerError() ApiError {
+	return ApiError{
+		Type:   API_ERROR_TYPE,
+		Title:  "Internal server error",
+		Detail: "Internal server error",
 		Status: http.StatusInternalServerError,
 	}
 }
