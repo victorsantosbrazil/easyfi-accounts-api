@@ -11,6 +11,7 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/echo"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/log"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/dao"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/repository"
@@ -24,8 +25,7 @@ var (
 	ControllerSet = wire.NewSet(api.NewV1Group, api.NewInstitutionController)
 )
 
-func NewApp() (*App, error) {
-
+func NewApp(logger log.Logger) (*App, error) {
 	wire.Build(
 		config.ReadConfig,
 		GetDataSourcesConfig,
