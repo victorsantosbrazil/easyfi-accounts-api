@@ -11,35 +11,35 @@ const (
 	_NOT_FOUND_ERROR = "Not found"
 )
 
-func HttpErrorHandler(err error, c echo.Context) {
-	c.Logger().Error(err)
+func HttpErrorHandler(err error, ctx echo.Context) {
+	EchoLogger(ctx).Error(err.Error())
 
 	switch err.(type) {
 	case *echo.HTTPError:
-		handleEchoHttpError(err.(*echo.HTTPError), c)
+		handleEchoHttpError(err.(*echo.HTTPError), ctx)
 		return
 	case errors.ApiError:
-		handleApiError(err.(errors.ApiError), c)
+		handleApiError(err.(errors.ApiError), ctx)
 		return
 	default:
-		handleError(err, c)
+		handleError(err, ctx)
 	}
 }
 
-func handleEchoHttpError(err *echo.HTTPError, c echo.Context) {
+func handleEchoHttpError(err *echo.HTTPError, ctx echo.Context) {
 	switch err.Code {
 	case http.StatusNotFound:
-		c.JSON(err.Code, errors.NotFoundError(_NOT_FOUND_ERROR))
+		ctx.JSON(err.Code, errors.NotFoundError(_NOT_FOUND_ERROR))
 		return
 	default:
-		c.JSON(http.StatusInternalServerError, errors.InternalServerError())
+		ctx.JSON(http.StatusInternalServerError, errors.InternalServerError())
 	}
 }
 
-func handleApiError(err errors.ApiError, c echo.Context) {
-	c.JSON(err.Status, err)
+func handleApiError(err errors.ApiError, ctx echo.Context) {
+	ctx.JSON(err.Status, err)
 }
 
-func handleError(err error, c echo.Context) {
-	c.JSON(http.StatusInternalServerError, errors.InternalServerError())
+func handleError(err error, ctx echo.Context) {
+	ctx.JSON(http.StatusInternalServerError, errors.InternalServerError())
 }

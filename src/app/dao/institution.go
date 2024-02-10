@@ -85,12 +85,12 @@ func NewInstitutionDAO(datasourcesConfig *datasource.DataSourcesConfig) (Institu
 
 	db, err := sql.Open("mysql", dbConfig.GetUrl())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error opening connection to database db: %s", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error pinging database db: %s", err)
 	}
 
 	return &institutionDAOImpl{
