@@ -13,11 +13,14 @@ import (
 func main() {
 	logger := log.NewLogger()
 
-	a, err := app.NewApp(logger)
+	a, err := app.NewApp()
 
 	if err != nil {
 		logger.Fatal(err.Error())
 	}
 
-	a.Start()
+	err = a.Start()
+	if err != nil {
+		logger.Fatal(err.Error())
+	}
 }
