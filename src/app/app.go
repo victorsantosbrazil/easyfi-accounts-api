@@ -15,29 +15,31 @@ type App struct {
 	controllers *api.Controllers
 }
 
-func (a *App) Start() {
-	a.setupDatabase()
-	addr := a.config.GetAddress()
-	err := a.echo.Start(addr)
+func (a *App) Start() error {
+	err := a.setupDatabase()
 	if err != nil {
-		a.logger.Fatal(err.Error())
+		return err
 	}
+
+	addr := a.config.GetAddress()
+	return a.echo.Start(addr)
 }
 
-func (a *App) setupDatabase() {
+func (a *App) setupDatabase() error {
 	dbConfig, err := a.config.DataSources.Mysql.Get("db")
 	if err != nil {
-		a.logger.Fatal("Fail setting up database: " + err.Error())
+		return err
 	}
 
 	m, err := migration.NewMysqlMigration(dbConfig)
 	if err != nil {
-		a.logger.Fatal("Fail setting up database: " + err.Error())
+		return err
 	}
 
 	m.Up()
+	return nil
 }
 
-func newApp(e *echo.Echo, cfg *config.Config, logger log.Logger, controllers *api.Controllers) *App {
-	return &App{echo: e, config: cfg, logger: logger, controllers: controllers}
+func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
+	return &App{echo: e, config: cfg, controllers: controllers}
 }
