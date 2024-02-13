@@ -12,6 +12,7 @@ func New() *echo.Echo {
 	e.HTTPErrorHandler = HttpErrorHandler
 
 	e.Use(middleware.LoggerContextMiddleware)
+	e.Use(middleware.TraceMiddleware)
 
 	serveSwagger(e)
 
