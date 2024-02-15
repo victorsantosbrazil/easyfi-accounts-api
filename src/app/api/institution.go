@@ -20,6 +20,7 @@ type InstitutionController struct {
 // @Param page query int false " "
 // @Param size query int false " "
 // @Success 200 {object} usecase.ListInstitutionsUseCaseResponse
+// @Failure 400  {object}  errors.ApiError
 func (c *InstitutionController) list(eCtx echo.Context) error {
 	ctx := eCtx.Request().Context()
 
