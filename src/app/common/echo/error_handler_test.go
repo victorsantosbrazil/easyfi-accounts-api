@@ -1,6 +1,7 @@
 package echo
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"net/http/httptest"
@@ -21,9 +22,9 @@ func TestErrorHandler(t *testing.T) {
 
 		HttpErrorHandler(err, ctx)
 
-		var actualErr cmnErrors.ApiError
-		json.NewDecoder(rec.Body).Decode(&actualErr)
-		assert.Equal(t, err, actualErr)
+		expectedBody := &bytes.Buffer{}
+		json.NewEncoder(expectedBody).Encode(err)
+		assert.Equal(t, expectedBody, rec.Body)
 	})
 
 	t.Run("should return internal server error when handling generic errors", func(t *testing.T) {
@@ -35,9 +36,9 @@ func TestErrorHandler(t *testing.T) {
 		HttpErrorHandler(err, ctx)
 
 		expectedErr := cmnErrors.InternalServerError()
-		var actualErr cmnErrors.ApiError
-		json.NewDecoder(rec.Body).Decode(&actualErr)
-		assert.Equal(t, expectedErr, actualErr)
+		expectedBody := &bytes.Buffer{}
+		json.NewEncoder(expectedBody).Encode(expectedErr)
+		assert.Equal(t, expectedBody, rec.Body)
 	})
 
 	t.Run("should return not found error when handling echo http errors with status codes not found", func(t *testing.T) {
@@ -49,9 +50,9 @@ func TestErrorHandler(t *testing.T) {
 		HttpErrorHandler(err, ctx)
 
 		expectedErr := cmnErrors.NotFoundError(_NOT_FOUND_ERROR)
-		var actualErr cmnErrors.ApiError
-		json.NewDecoder(rec.Body).Decode(&actualErr)
-		assert.Equal(t, expectedErr, actualErr)
+		expectedBody := &bytes.Buffer{}
+		json.NewEncoder(expectedBody).Encode(expectedErr)
+		assert.Equal(t, expectedBody, rec.Body)
 	})
 
 	t.Run("should return internal server error when handling echo http errors with status codes not handled", func(t *testing.T) {
@@ -63,8 +64,8 @@ func TestErrorHandler(t *testing.T) {
 		HttpErrorHandler(err, ctx)
 
 		expectedErr := cmnErrors.InternalServerError()
-		var actualErr cmnErrors.ApiError
-		json.NewDecoder(rec.Body).Decode(&actualErr)
-		assert.Equal(t, expectedErr, actualErr)
+		expectedBody := &bytes.Buffer{}
+		json.NewEncoder(expectedBody).Encode(expectedErr)
+		assert.Equal(t, expectedBody, rec.Body)
 	})
 }

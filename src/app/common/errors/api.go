@@ -7,10 +7,10 @@ const (
 )
 
 type ApiError struct {
-	Type   string `json:"type"`
-	Title  string `json:"title"`
-	Detail string `json:"detail"`
-	Status int    `json:"status"`
+	Type   string `json:"type" example:"api_error"`
+	Title  string `json:"title" example:"Example error"`
+	Detail string `json:"detail" example:"Could not process request due ..."`
+	Status int    `json:"-"`
 }
 
 func (e ApiError) Error() string {
