@@ -77,8 +77,12 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 	}, nil
 }
 
-func NewInstitutionDAO(datasourcesConfig *datasource.DataSourcesConfig) (InstitutionDAO, error) {
-	dbConfig, err := datasourcesConfig.Mysql.Get("db")
+func NewInstitutionDAO(config *datasource.DataSourcesConfig) (InstitutionDAO, error) {
+	if config == nil || config.Mysql == nil {
+		return nil, datasource.ErrDataSourceNotFound("db")
+	}
+
+	dbConfig, err := config.Mysql.Get("db")
 	if err != nil {
 		return nil, err
 	}

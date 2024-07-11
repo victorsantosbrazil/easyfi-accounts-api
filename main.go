@@ -14,7 +14,6 @@ func main() {
 	logger := log.NewLogger()
 
 	a, err := app.NewApp()
-
 	if err != nil {
 		logger.Fatal(err.Error())
 	}
