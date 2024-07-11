@@ -1,0 +1,78 @@
+definitions:
+  errors.ApiError:
+    properties:
+      detail:
+        example: Could not process request due ...
+        type: string
+      title:
+        example: Example error
+        type: string
+      type:
+        example: api_error
+        type: string
+    type: object
+  pagination.Pagination:
+    properties:
+      page:
+        example: 1
+        type: integer
+      size:
+        example: 10
+        type: integer
+      totalElements:
+        example: 50
+        type: integer
+      totalPages:
+        example: 5
+        type: integer
+    type: object
+  usecase.ListInstitutionsUseCaseResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/usecase.ListInstitutionsUseCaseResponseItem'
+        type: array
+      pagination:
+        $ref: '#/definitions/pagination.Pagination'
+    type: object
+  usecase.ListInstitutionsUseCaseResponseItem:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Brazil Bank
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API for managing financial institutions
+  title: Financial Institutions API
+  version: 0.1.0
+paths:
+  /v1/institutions:
+    get:
+      parameters:
+      - description: ' '
+        in: query
+        name: page
+        type: integer
+      - description: ' '
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usecase.ListInstitutionsUseCaseResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ApiError'
+      summary: list institutions
+      tags:
+      - institutions
+swagger: "2.0"

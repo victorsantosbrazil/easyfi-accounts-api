@@ -1,7 +1,6 @@
 # Generated files
 wire_gen.go
 mock_*.go
-docs/swagger/
 
 # Others
 .devcontainer/
