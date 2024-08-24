@@ -5,7 +5,7 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/migration"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
 )
 
 type App struct {
@@ -26,12 +26,9 @@ func (a *App) Start() error {
 }
 
 func (a *App) setupDatabase() error {
-	dbConfig, err := a.config.DataSources.Mysql.Get("db")
-	if err != nil {
-		return err
-	}
+	dsConfig := a.config.DataSource
 
-	m, err := migration.NewMysqlMigration(dbConfig)
+	m, err := mysql.NewMigration(dsConfig)
 	if err != nil {
 		return err
 	}

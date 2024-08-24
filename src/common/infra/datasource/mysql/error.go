@@ -1,4 +1,4 @@
-package datasource
+package mysql
 
 type ScanRowError struct {
 	Cause string

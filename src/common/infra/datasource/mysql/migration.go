@@ -1,24 +1,23 @@
-package migration
+package mysql
 
 import (
 	"database/sql"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/mysql"
+	mysqlmigrate "github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
 )
 
-type MysqlMigration struct {
+type Migration struct {
 	migrate *migrate.Migrate
 }
 
-func (m *MysqlMigration) Up() error {
+func (m *Migration) Up() error {
 	return m.migrate.Up()
 }
 
-func NewMysqlMigration(dsConfig *datasource.MysqlDataSourceConfig) (*MysqlMigration, error) {
+func NewMigration(dsConfig *Config) (*Migration, error) {
 	db, err := sql.Open("mysql", dsConfig.GetUrl())
 	if err != nil {
 		return nil, err
@@ -29,7 +28,7 @@ func NewMysqlMigration(dsConfig *datasource.MysqlDataSourceConfig) (*MysqlMigrat
 		return nil, err
 	}
 
-	driver, err := mysql.WithInstance(db, &mysql.Config{})
+	driver, err := mysqlmigrate.WithInstance(db, &mysqlmigrate.Config{})
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +38,7 @@ func NewMysqlMigration(dsConfig *datasource.MysqlDataSourceConfig) (*MysqlMigrat
 		return nil, err
 	}
 
-	return &MysqlMigration{
+	return &Migration{
 		migrate: m,
 	}, nil
 }

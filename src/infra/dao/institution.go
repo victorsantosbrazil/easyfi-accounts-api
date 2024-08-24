@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
 )
 
 const _TABLE_NAME = "institution"
@@ -59,7 +59,7 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 		var institution InstitutionData
 		err := rows.Scan(&institution.Id, &institution.Name)
 		if err != nil {
-			return PageInstitutionData{}, datasource.NewScanRowError(err.Error())
+			return PageInstitutionData{}, mysql.NewScanRowError(err.Error())
 		}
 		institutions = append(institutions, institution)
 	}
@@ -77,17 +77,9 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 	}, nil
 }
 
-func NewInstitutionDAO(config *datasource.DataSourcesConfig) (InstitutionDAO, error) {
-	if config == nil || config.Mysql == nil {
-		return nil, datasource.ErrDataSourceNotFound("db")
-	}
+func NewInstitutionDAO(config *mysql.Config) (InstitutionDAO, error) {
 
-	dbConfig, err := config.Mysql.Get("db")
-	if err != nil {
-		return nil, err
-	}
-
-	db, err := sql.Open("mysql", dbConfig.GetUrl())
+	db, err := sql.Open("mysql", config.GetUrl())
 	if err != nil {
 		return nil, fmt.Errorf("error opening connection to database db: %s", err)
 	}
@@ -100,4 +92,5 @@ func NewInstitutionDAO(config *datasource.DataSourcesConfig) (InstitutionDAO, er
 	return &institutionDAOImpl{
 		db: db,
 	}, nil
+
 }

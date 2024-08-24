@@ -3,12 +3,12 @@ package config
 import (
 	"fmt"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
 )
 
 type Config struct {
-	Port        int
-	DataSources *datasource.DataSourcesConfig
+	Port       int
+	DataSource *mysql.Config
 }
 
 func (c *Config) GetAddress() string {

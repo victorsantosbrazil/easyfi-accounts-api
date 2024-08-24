@@ -12,7 +12,7 @@ import (
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/usecase"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/echo"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/domain/repository"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/infra/dao"
 )
@@ -27,7 +27,7 @@ var (
 func NewApp() (*App, error) {
 	wire.Build(
 		config.ReadConfig,
-		GetDataSourcesConfig,
+		GetDataSourceConfig,
 		echo.New,
 		DAOSet,
 		RepositorySet,
@@ -40,6 +40,6 @@ func NewApp() (*App, error) {
 	return &App{}, nil
 }
 
-func GetDataSourcesConfig(cfg *config.Config) *datasource.DataSourcesConfig {
-	return cfg.DataSources
+func GetDataSourceConfig(cfg *config.Config) *mysql.Config {
+	return cfg.DataSource
 }

@@ -11,36 +11,29 @@ import (
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/migration"
+	mysql "github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/common/testing/integration"
 )
 
 const countQueryRegex = `SELECT COUNT\(id\) FROM ` + _TABLE_NAME
 const getPageQueryRegex = `SELECT id, name FROM ` + _TABLE_NAME + ` ORDER BY name ASC LIMIT [0-9]+ OFFSET [0-9]+`
 
-func setupTestEnvironment() (datasourcesConfig *datasource.DataSourcesConfig, tearDown func() error) {
-	dbConfig := &datasource.MysqlDataSourceConfig{
+func setupTestEnvironment() (dsConfig *mysql.Config, tearDown func() error) {
+	dsConfig = &mysql.Config{
 		Host:     "localhost",
 		User:     "testuser",
 		Password: "testpasswd",
 		Database: "institution",
-		Migration: &datasource.MysqlDataSourceMigrationConfig{
+		Migration: &mysql.MigrationConfig{
 			Source: "file://../../../database/institution/schema",
-		},
-	}
-
-	datasourcesConfig = &datasource.DataSourcesConfig{
-		Mysql: &datasource.MysqlDataSourcesConfig{
-			"db": dbConfig,
 		},
 	}
 
 	mysqlConfig := integration.MysqlConfig{
 		RootPassword: "root",
-		User:         dbConfig.User,
-		Password:     dbConfig.Password,
-		Database:     dbConfig.Database,
+		User:         dsConfig.User,
+		Password:     dsConfig.Password,
+		Database:     dsConfig.Database,
 	}
 
 	mysqlResource := integration.RunMysql(mysqlConfig)
@@ -51,20 +44,20 @@ func setupTestEnvironment() (datasourcesConfig *datasource.DataSourcesConfig, te
 		log.Fatal(err)
 	}
 
-	dbConfig.Port = port
+	dsConfig.Port = port
 
-	err = setupMysqlDB(dbConfig)
+	err = setupMysqlDB(dsConfig)
 	if err != nil {
 		mysqlResource.Stop()
 		log.Fatal(err)
 	}
 
-	return datasourcesConfig, mysqlResource.Stop
+	return dsConfig, mysqlResource.Stop
 
 }
 
-func setupMysqlDB(dsConfig *datasource.MysqlDataSourceConfig) error {
-	m, err := migration.NewMysqlMigration(dsConfig)
+func setupMysqlDB(dsConfig *mysql.Config) error {
+	m, err := mysql.NewMigration(dsConfig)
 	if err != nil {
 		return err
 	}
@@ -74,13 +67,8 @@ func setupMysqlDB(dsConfig *datasource.MysqlDataSourceConfig) error {
 func TestCount(t *testing.T) {
 
 	t.Run("should count elements inserted", func(t *testing.T) {
-		dataSourcesCfg, tearDownTestEnvironment := setupTestEnvironment()
+		dsConfig, tearDownTestEnvironment := setupTestEnvironment()
 		defer tearDownTestEnvironment()
-
-		dbConfig, err := dataSourcesCfg.Mysql.Get("db")
-		if err != nil {
-			t.Fatal(err)
-		}
 
 		institutions := []InstitutionData{
 			{Id: 1, Name: "JPMorgan Chase & Co."},
@@ -90,12 +78,12 @@ func TestCount(t *testing.T) {
 			{Id: 5, Name: "HSBC Holdings plc"},
 		}
 
-		err = populateDatabase(dbConfig, institutions)
+		err := populateDatabase(dsConfig, institutions)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		institutionsDAO, err := NewInstitutionDAO(dataSourcesCfg)
+		institutionsDAO, err := NewInstitutionDAO(dsConfig)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -128,14 +116,8 @@ func TestCount(t *testing.T) {
 
 func TestGetPage(t *testing.T) {
 	t.Run("should return page with institutions", func(t *testing.T) {
-		dataSourcesCfg, tearDownTestEnvironment := setupTestEnvironment()
+		dsConfig, tearDownTestEnvironment := setupTestEnvironment()
 		defer tearDownTestEnvironment()
-
-		dbConfig, err := dataSourcesCfg.Mysql.Get("db")
-
-		if err != nil {
-			t.Fatal(err)
-		}
 
 		institutions := []InstitutionData{
 			{Id: 1, Name: "JPMorgan Chase & Co."},
@@ -145,12 +127,12 @@ func TestGetPage(t *testing.T) {
 			{Id: 5, Name: "HSBC Holdings plc"},
 		}
 
-		err = populateDatabase(dbConfig, institutions)
+		err := populateDatabase(dsConfig, institutions)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		institutionsDAO, err := NewInstitutionDAO(dataSourcesCfg)
+		institutionsDAO, err := NewInstitutionDAO(dsConfig)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -234,12 +216,12 @@ func TestGetPage(t *testing.T) {
 		dbmock.ExpectQuery(getPageQueryRegex).WillReturnRows(getPageRows)
 		pageParams := pagination.PageParams{Size: 3, Page: 1}
 		_, actualErr := institutionsDAO.GetPage(context.Background(), pageParams)
-		assert.IsType(t, datasource.ScanRowError{}, actualErr)
+		assert.IsType(t, mysql.ScanRowError{}, actualErr)
 	})
 
 }
 
-func populateDatabase(cfg *datasource.MysqlDataSourceConfig, institutions []InstitutionData) error {
+func populateDatabase(cfg *mysql.Config, institutions []InstitutionData) error {
 	db, err := sql.Open("mysql", cfg.GetUrl())
 	if err != nil {
 		return err
