@@ -1,7 +1,7 @@
 package config
 
 import (
-	cmnconfig "github.com/victorsantosbrazil/financial-institutions-api/src/app/common/config"
+	cmnconfig "github.com/victorsantosbrazil/financial-institutions-api/src/common/app/config"
 )
 
 func ReadConfig() (*Config, error) {

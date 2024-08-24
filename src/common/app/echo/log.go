@@ -2,7 +2,7 @@ package echo
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/log"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
 )
 
 func EchoLogger(eCtx echo.Context) log.Logger {

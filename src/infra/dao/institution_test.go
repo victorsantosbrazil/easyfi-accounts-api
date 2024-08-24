@@ -10,10 +10,10 @@ import (
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource/migration"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/domain/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/testing/integration"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/migration"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/testing/integration"
 )
 
 const countQueryRegex = `SELECT COUNT\(id\) FROM ` + _TABLE_NAME

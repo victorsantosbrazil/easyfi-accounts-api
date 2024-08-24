@@ -4,7 +4,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/victorsantosbrazil/financial-institutions-api/docs/swagger"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/log"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
 )
 
 // @title Financial Institutions API

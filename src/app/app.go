@@ -3,9 +3,9 @@ package app
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource/migration"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/log"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/migration"
 )
 
 type App struct {

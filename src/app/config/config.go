@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
 )
 
 type Config struct {

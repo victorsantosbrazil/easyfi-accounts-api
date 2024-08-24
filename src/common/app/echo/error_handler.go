@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/errors"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/errors"
 )
 
 const (

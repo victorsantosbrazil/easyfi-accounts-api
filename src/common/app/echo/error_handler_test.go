@@ -9,7 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-	cmnErrors "github.com/victorsantosbrazil/financial-institutions-api/src/app/common/errors"
+	cmnErrors "github.com/victorsantosbrazil/financial-institutions-api/src/common/app/errors"
 )
 
 func TestErrorHandler(t *testing.T) {

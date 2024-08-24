@@ -7,7 +7,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
 )
 
 type MysqlMigration struct {

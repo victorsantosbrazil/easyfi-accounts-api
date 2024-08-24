@@ -9,12 +9,12 @@ package app
 import (
 	"github.com/google/wire"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/datasource"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/common/echo"
 	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/dao"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/repository"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/domain/usecase"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/app/usecase"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/echo"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/domain/repository"
+	"github.com/victorsantosbrazil/financial-institutions-api/src/infra/dao"
 )
 
 var (

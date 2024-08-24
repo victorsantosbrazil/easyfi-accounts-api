@@ -11,8 +11,8 @@ wire:
 	@go install github.com/google/wire/cmd/wire@v0.5.0
 	@go generate ./src/app/wire.go > /dev/null
 
-build:
-	@echo "Building..."
+compile:
+	@echo "Compiling..."
 	@make wire > /dev/null
 
 mock:
@@ -30,7 +30,7 @@ doc:
 	@go install github.com/swaggo/swag/cmd/swag@latest
 	@swag init -o ./docs/swagger	
 	
-install: install-dependencies vulncheck build test doc
+install: install-dependencies compile test vulncheck doc
 
 run:
 	@go run main.go
