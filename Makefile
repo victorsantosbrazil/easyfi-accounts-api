@@ -30,7 +30,7 @@ doc:
 	@go install github.com/swaggo/swag/cmd/swag@latest
 	@swag init -o ./docs/swagger	
 	
-install: install-dependencies compile test vulncheck doc
+install: install-dependencies compile test doc
 
 run:
 	@go run main.go
