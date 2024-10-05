@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/usecase"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/usecase"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
 )
 
 const _CONTROLLER_PATH = "/institutions"

@@ -11,8 +11,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/usecase"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/usecase"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
 )
 
 func TestListInstitutions(t *testing.T) {

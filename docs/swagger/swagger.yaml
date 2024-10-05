@@ -46,8 +46,8 @@ definitions:
     type: object
 info:
   contact: {}
-  description: API for managing financial institutions
-  title: Financial Institutions API
+  description: API for managing record of bank accounts and credit cards
+  title: Accounts API
   version: 0.1.0
 paths:
   /v1/institutions:

@@ -5,9 +5,9 @@ package repository
 import (
 	"context"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/domain/entity"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/infra/dao"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/infra/dao"
 )
 
 type PageInstitution = pagination.Page[entity.Institution]

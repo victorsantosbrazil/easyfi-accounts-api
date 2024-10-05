@@ -5,9 +5,9 @@ package usecase
 import (
 	"context"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/domain/entity"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/domain/repository"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/repository"
 )
 
 type ListInstitutionsUseCaseResponse pagination.Page[ListInstitutionsUseCaseResponseItem]

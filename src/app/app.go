@@ -2,10 +2,10 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/api"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app/config"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/config"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/log"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
 )
 
 type App struct {

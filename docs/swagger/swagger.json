@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API for managing financial institutions",
-        "title": "Financial Institutions API",
+        "description": "API for managing record of bank accounts and credit cards",
+        "title": "Accounts API",
         "contact": {},
         "version": "0.1.0"
     },

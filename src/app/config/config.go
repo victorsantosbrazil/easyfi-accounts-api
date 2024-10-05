@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
 )
 
 type Config struct {

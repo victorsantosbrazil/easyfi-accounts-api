@@ -9,8 +9,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
 )
 
 const _TABLE_NAME = "institution"

@@ -2,14 +2,14 @@ package main
 
 import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	_ "github.com/victorsantosbrazil/financial-institutions-api/docs/swagger"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/app"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/log"
+	_ "github.com/victorsantosbrazil/easyfi-accounts-api/docs/swagger"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/log"
 )
 
-// @title Financial Institutions API
+// @title Accounts API
 // @version 0.1.0
-// @description API for managing financial institutions
+// @description API for managing bank accounts and credit cards
 func main() {
 	logger := log.NewLogger()
 

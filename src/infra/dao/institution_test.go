@@ -10,9 +10,9 @@ import (
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/model/pagination"
-	mysql "github.com/victorsantosbrazil/financial-institutions-api/src/common/infra/datasource/mysql"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/testing/integration"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
+	mysql "github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/testing/integration"
 )
 
 const countQueryRegex = `SELECT COUNT\(id\) FROM ` + _TABLE_NAME

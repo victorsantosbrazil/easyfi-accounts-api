@@ -3,7 +3,7 @@ package pagination
 import (
 	"fmt"
 
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/errors"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/errors"
 )
 
 func InvalidPageParam(param string, value interface{}) error {

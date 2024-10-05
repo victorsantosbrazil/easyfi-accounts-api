@@ -3,7 +3,7 @@ package echo
 import (
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"github.com/victorsantosbrazil/financial-institutions-api/src/common/app/echo/middleware"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/echo/middleware"
 )
 
 func New() *echo.Echo {
