@@ -1,4 +1,4 @@
-package repository
+package service
 
 import (
 	"context"
@@ -7,16 +7,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/infra/dao"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/infra/dao"
 )
 
 func TestGetPage(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 
 	institutionDAO := dao.NewMockInstitutionDAO(mockCtrl)
-	institutionRepository := NewInstitutionRepository(institutionDAO)
+	institutionService := NewInstitutionService(institutionDAO)
 
 	t.Run("returns page of banks", func(t *testing.T) {
 		ctx := context.Background()
@@ -42,7 +42,7 @@ func TestGetPage(t *testing.T) {
 			}
 		})
 
-		actual, err := institutionRepository.GetPage(ctx, pageParams)
+		actual, err := institutionService.GetPage(ctx, pageParams)
 
 		if assert.NoError(t, err) {
 			assert.Equal(t, expected, actual)
@@ -58,7 +58,7 @@ func TestGetPage(t *testing.T) {
 		expectedErr := errors.New("error")
 		institutionDAO.EXPECT().GetPage(ctx, pageParams).Return(dao.PageInstitutionData{}, expectedErr)
 
-		_, actualErr := institutionRepository.GetPage(ctx, pageParams)
+		_, actualErr := institutionService.GetPage(ctx, pageParams)
 
 		assert.ErrorIs(t, actualErr, expectedErr)
 	})

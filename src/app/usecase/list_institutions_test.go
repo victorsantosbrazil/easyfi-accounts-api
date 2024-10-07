@@ -7,16 +7,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/service"
 	pagination "github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/repository"
 )
 
 func TestRun(t *testing.T) {
 
 	mockCtrl := gomock.NewController(t)
-	institutionRepository := repository.NewMockInstitutionRepository(mockCtrl)
-	usecase := NewListInstitutionsUseCase(institutionRepository)
+	institutionService := service.NewMockInstitutionService(mockCtrl)
+	usecase := NewListInstitutionsUseCase(institutionService)
 
 	t.Run("returns page of banks", func(t *testing.T) {
 		ctx := context.Background()
@@ -27,12 +27,12 @@ func TestRun(t *testing.T) {
 			{Id: 2, Name: "Bank of America"},
 		}
 
-		pageInstitutions := repository.PageInstitution{
+		pageInstitutions := service.PageInstitution{
 			Pagination: pagination.Pagination{Page: 1},
 			Items:      institutions,
 		}
 
-		institutionRepository.EXPECT().GetPage(ctx, pageRequest).Return(
+		institutionService.EXPECT().GetPage(ctx, pageRequest).Return(
 			pageInstitutions, nil)
 
 		expectedPagination := pageInstitutions.Pagination
@@ -58,8 +58,8 @@ func TestRun(t *testing.T) {
 
 		expectedErr := errors.New("error")
 
-		institutionRepository.EXPECT().GetPage(ctx, pageRequest).Return(
-			repository.PageInstitution{}, expectedErr)
+		institutionService.EXPECT().GetPage(ctx, pageRequest).Return(
+			service.PageInstitution{}, expectedErr)
 
 		_, actualErr := usecase.Run(ctx, pageRequest)
 

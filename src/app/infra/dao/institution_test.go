@@ -25,7 +25,7 @@ func setupTestEnvironment() (dsConfig *mysql.Config, tearDown func() error) {
 		Password: "testpasswd",
 		Database: "institution",
 		Migration: &mysql.MigrationConfig{
-			Source: "file://../../../database/institution/schema",
+			Source: "file://../../../../database/institution/schema",
 		},
 	}
 

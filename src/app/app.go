@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api/rest"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/config"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/log"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
@@ -12,7 +12,7 @@ type App struct {
 	echo        *echo.Echo
 	logger      log.Logger
 	config      *config.Config
-	controllers *api.Controllers
+	controllers *rest.Controllers
 }
 
 func (a *App) Start() error {
@@ -37,6 +37,6 @@ func (a *App) setupDatabase() error {
 	return nil
 }
 
-func newApp(e *echo.Echo, cfg *config.Config, controllers *api.Controllers) *App {
+func newApp(e *echo.Echo, cfg *config.Config, controllers *rest.Controllers) *App {
 	return &App{echo: e, config: cfg, controllers: controllers}
 }

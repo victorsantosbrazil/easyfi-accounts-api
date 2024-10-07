@@ -1,26 +1,26 @@
 //go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE.go -package=$GOPACKAGE
 
-package repository
+package service
 
 import (
 	"context"
 
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/infra/dao"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/infra/dao"
 )
 
 type PageInstitution = pagination.Page[entity.Institution]
 
-type InstitutionRepository interface {
+type InstitutionService interface {
 	GetPage(ctx context.Context, pageParams pagination.PageParams) (PageInstitution, error)
 }
 
-type institutionRepositoryImpl struct {
+type institutionServiceImpl struct {
 	institutionDAO dao.InstitutionDAO
 }
 
-func (r *institutionRepositoryImpl) GetPage(ctx context.Context, pageParams pagination.PageParams) (PageInstitution, error) {
+func (r *institutionServiceImpl) GetPage(ctx context.Context, pageParams pagination.PageParams) (PageInstitution, error) {
 	pageData, err := r.institutionDAO.GetPage(ctx, pageParams)
 
 	if err != nil {
@@ -36,8 +36,8 @@ func (r *institutionRepositoryImpl) GetPage(ctx context.Context, pageParams pagi
 	return PageInstitution(page), nil
 }
 
-func NewInstitutionRepository(institutionDAO dao.InstitutionDAO) InstitutionRepository {
-	return &institutionRepositoryImpl{
+func NewInstitutionService(institutionDAO dao.InstitutionDAO) InstitutionService {
+	return &institutionServiceImpl{
 		institutionDAO: institutionDAO,
 	}
 }

@@ -8,20 +8,20 @@ package app
 
 import (
 	"github.com/google/wire"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api/rest"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/config"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/infra/dao"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/service"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/usecase"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/echo"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/repository"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/infra/dao"
 )
 
 var (
 	DAOSet        = wire.NewSet(dao.NewInstitutionDAO)
-	RepositorySet = wire.NewSet(repository.NewInstitutionRepository)
+	ServiceSet    = wire.NewSet(service.NewInstitutionService)
 	UseCaseSet    = wire.NewSet(usecase.NewListInstitutionsUseCase)
-	ControllerSet = wire.NewSet(api.NewV1Group, api.NewInstitutionController)
+	ControllerSet = wire.NewSet(rest.NewV1Group, rest.NewInstitutionController)
 )
 
 func NewApp() (*App, error) {
@@ -30,10 +30,10 @@ func NewApp() (*App, error) {
 		GetDataSourceConfig,
 		echo.New,
 		DAOSet,
-		RepositorySet,
+		ServiceSet,
 		UseCaseSet,
 		ControllerSet,
-		api.NewControllers,
+		rest.NewControllers,
 		newApp,
 	)
 

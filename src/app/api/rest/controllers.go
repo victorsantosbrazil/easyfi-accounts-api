@@ -1,4 +1,4 @@
-package api
+package rest
 
 type Controllers struct {
 	institutionsController *InstitutionController

@@ -5,9 +5,9 @@ package usecase
 import (
 	"context"
 
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/domain/entity"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/service"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/entity"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/domain/repository"
 )
 
 type ListInstitutionsUseCaseResponse pagination.Page[ListInstitutionsUseCaseResponseItem]
@@ -22,11 +22,11 @@ type ListInstitutionsUseCase interface {
 }
 
 type listInstitutionsUseCaseImpl struct {
-	institutionRepository repository.InstitutionRepository
+	institutionService service.InstitutionService
 }
 
 func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagination.PageParams) (ListInstitutionsUseCaseResponse, error) {
-	pageInstitutions, err := u.institutionRepository.GetPage(ctx, pageParams)
+	pageInstitutions, err := u.institutionService.GetPage(ctx, pageParams)
 
 	if err != nil {
 		return ListInstitutionsUseCaseResponse{}, err
@@ -42,8 +42,8 @@ func (u *listInstitutionsUseCaseImpl) Run(ctx context.Context, pageParams pagina
 	return ListInstitutionsUseCaseResponse(page), nil
 }
 
-func NewListInstitutionsUseCase(institutionRepository repository.InstitutionRepository) ListInstitutionsUseCase {
+func NewListInstitutionsUseCase(institutionService service.InstitutionService) ListInstitutionsUseCase {
 	return &listInstitutionsUseCaseImpl{
-		institutionRepository: institutionRepository,
+		institutionService: institutionService,
 	}
 }
