@@ -7,10 +7,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/go-sql-driver/mysql"
-
+	_ "github.com/lib/pq"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/postgresql"
 )
 
 const _TABLE_NAME = "institution"
@@ -59,7 +58,7 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 		var institution InstitutionData
 		err := rows.Scan(&institution.Id, &institution.Name)
 		if err != nil {
-			return PageInstitutionData{}, mysql.NewScanRowError(err.Error())
+			return PageInstitutionData{}, postgresql.NewScanRowError(err.Error())
 		}
 		institutions = append(institutions, institution)
 	}
@@ -77,9 +76,9 @@ func (d *institutionDAOImpl) GetPage(ctx context.Context, pageParams pagination.
 	}, nil
 }
 
-func NewInstitutionDAO(config *mysql.Config) (InstitutionDAO, error) {
+func NewInstitutionDAO(config *postgresql.Config) (InstitutionDAO, error) {
 
-	db, err := sql.Open("mysql", config.GetUrl())
+	db, err := sql.Open("postgres", config.GetUrl())
 	if err != nil {
 		return nil, fmt.Errorf("error opening connection to database db: %s", err)
 	}

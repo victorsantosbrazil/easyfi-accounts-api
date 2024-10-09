@@ -14,7 +14,7 @@ import (
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/service"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/usecase"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/echo"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/postgresql"
 )
 
 var (
@@ -40,6 +40,6 @@ func NewApp() (*App, error) {
 	return &App{}, nil
 }
 
-func GetDataSourceConfig(cfg *config.Config) *mysql.Config {
+func GetDataSourceConfig(cfg *config.Config) *postgresql.Config {
 	return cfg.DataSource
 }

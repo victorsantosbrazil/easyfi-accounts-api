@@ -6,18 +6,17 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"github.com/ory/dockertest/v3"
 )
 
-type MysqlConfig struct {
-	RootPassword string
-	User         string
-	Password     string
-	Database     string
+type PostgresConfig struct {
+	User     string
+	Password string
+	Database string
 }
 
-func RunMysql(config MysqlConfig) Container {
+func RunPostgres(config PostgresConfig) Container {
 	var db *sql.DB
 
 	pool, err := dockertest.NewPool("")
@@ -30,10 +29,11 @@ func RunMysql(config MysqlConfig) Container {
 		log.Fatalf("Could not connect to Docker: %s", err)
 	}
 
-	env := getMysqlEnv(config)
+	env := getPostgresEnv(config)
 
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
-		Repository: "mysql",
+		Repository: "postgres",
+		Tag:        "16-bullseye",
 		Env:        env,
 	})
 
@@ -50,19 +50,18 @@ func RunMysql(config MysqlConfig) Container {
 	// to accept connections yet
 	err = pool.Retry(func() error {
 		var err error
-		port := resource.GetPort("3306/tcp")
-		db, err = sql.Open("mysql", fmt.Sprintf("root:root@(localhost:%s)/%s", port, config.Database))
+		port := resource.GetPort("5432/tcp")
+		db, err = sql.Open("postgres", fmt.Sprintf("postgres://%s:%s@localhost:%s/%s?sslmode=disable", config.User, config.Password, port, config.Database))
 		if err != nil {
-			return errors.New("Fail to open connection to mysql instance")
+			return errors.New("Fail to open connection to postgres instance")
 		}
 
 		err = db.Ping()
 		if err != nil {
-			return errors.New("Fail to ping mysql instance")
+			return errors.New("Fail to ping postgres instance")
 		}
 
 		return nil
-
 	})
 
 	if err != nil {
@@ -73,19 +72,10 @@ func RunMysql(config MysqlConfig) Container {
 	return container
 }
 
-func getMysqlEnv(config MysqlConfig) []string {
-	env := []string{
-		fmt.Sprintf("MYSQL_ROOT_PASSWORD=%s", config.RootPassword),
-		fmt.Sprintf("MYSQL_DATABASE=%s", config.Database),
+func getPostgresEnv(config PostgresConfig) []string {
+	return []string{
+		fmt.Sprintf("POSTGRES_USER=%s", config.User),
+		fmt.Sprintf("POSTGRES_PASSWORD=%s", config.Password),
+		fmt.Sprintf("POSTGRES_DB=%s", config.Database),
 	}
-
-	if config.User != "" {
-		env = append(env, fmt.Sprintf("MYSQL_USER=%s", config.User))
-	}
-
-	if config.Password != "" {
-		env = append(env, fmt.Sprintf("MYSQL_PASSWORD=%s", config.Password))
-	}
-
-	return env
 }

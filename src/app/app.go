@@ -5,7 +5,7 @@ import (
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/api/rest"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/app/config"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/log"
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/postgresql"
 )
 
 type App struct {
@@ -28,7 +28,7 @@ func (a *App) Start() error {
 func (a *App) setupDatabase() error {
 	dsConfig := a.config.DataSource
 
-	m, err := mysql.NewMigration(dsConfig)
+	m, err := postgresql.NewMigration(dsConfig)
 	if err != nil {
 		return err
 	}

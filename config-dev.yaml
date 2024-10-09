@@ -1,8 +1,9 @@
 datasource:
   host: "localhost"
-  port: 3306
+  port: 5432
   user: "devuser"
   password: "devpasswd"
-  database: "institution"
-  migration: 
-    source: "file://./database/institution/schema"
+  database: "account"
+  sslmode: "disable"
+  migration:
+    source: "file://./database/schema"

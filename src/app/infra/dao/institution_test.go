@@ -11,53 +11,52 @@ import (
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/app/model/pagination"
-	mysql "github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/postgresql"
 	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/testing/integration"
 )
 
 const countQueryRegex = `SELECT COUNT\(id\) FROM ` + _TABLE_NAME
 const getPageQueryRegex = `SELECT id, name FROM ` + _TABLE_NAME + ` ORDER BY name ASC LIMIT [0-9]+ OFFSET [0-9]+`
 
-func setupTestEnvironment() (dsConfig *mysql.Config, tearDown func() error) {
-	dsConfig = &mysql.Config{
+func setupTestEnvironment() (dsConfig *postgresql.Config, tearDown func() error) {
+	dsConfig = &postgresql.Config{
 		Host:     "localhost",
 		User:     "testuser",
 		Password: "testpasswd",
-		Database: "institution",
-		Migration: &mysql.MigrationConfig{
-			Source: "file://../../../../database/institution/schema",
+		Database: "account",
+		SslMode:  "disable",
+		Migration: &postgresql.MigrationConfig{
+			Source: "file://../../../../database/schema",
 		},
 	}
 
-	mysqlConfig := integration.MysqlConfig{
-		RootPassword: "root",
-		User:         dsConfig.User,
-		Password:     dsConfig.Password,
-		Database:     dsConfig.Database,
+	postgresqlConfig := integration.PostgresConfig{
+		User:     dsConfig.User,
+		Password: dsConfig.Password,
+		Database: dsConfig.Database,
 	}
 
-	mysqlResource := integration.RunMysql(mysqlConfig)
+	postgresqlResource := integration.RunPostgres(postgresqlConfig)
 
-	port, err := strconv.Atoi(mysqlResource.GetPort("3306/tcp"))
+	port, err := strconv.Atoi(postgresqlResource.GetPort("5432/tcp"))
 	if err != nil {
-		mysqlResource.Stop()
+		postgresqlResource.Stop()
 		log.Fatal(err)
 	}
 
 	dsConfig.Port = port
 
-	err = setupMysqlDB(dsConfig)
+	err = setupDB(dsConfig)
 	if err != nil {
-		mysqlResource.Stop()
+		postgresqlResource.Stop()
 		log.Fatal(err)
 	}
 
-	return dsConfig, mysqlResource.Stop
-
+	return dsConfig, postgresqlResource.Stop
 }
 
-func setupMysqlDB(dsConfig *mysql.Config) error {
-	m, err := mysql.NewMigration(dsConfig)
+func setupDB(dsConfig *postgresql.Config) error {
+	m, err := postgresql.NewMigration(dsConfig)
 	if err != nil {
 		return err
 	}
@@ -216,13 +215,13 @@ func TestGetPage(t *testing.T) {
 		dbmock.ExpectQuery(getPageQueryRegex).WillReturnRows(getPageRows)
 		pageParams := pagination.PageParams{Size: 3, Page: 1}
 		_, actualErr := institutionsDAO.GetPage(context.Background(), pageParams)
-		assert.IsType(t, mysql.ScanRowError{}, actualErr)
+		assert.IsType(t, postgresql.ScanRowError{}, actualErr)
 	})
 
 }
 
-func populateDatabase(cfg *mysql.Config, institutions []InstitutionData) error {
-	db, err := sql.Open("mysql", cfg.GetUrl())
+func populateDatabase(cfg *postgresql.Config, institutions []InstitutionData) error {
+	db, err := sql.Open("postgres", cfg.GetUrl())
 	if err != nil {
 		return err
 	}
@@ -230,7 +229,8 @@ func populateDatabase(cfg *mysql.Config, institutions []InstitutionData) error {
 
 	// Insert each institution into the database
 	for _, institution := range institutions {
-		_, err := db.Exec("INSERT INTO institution (id, name) VALUES (?, ?)", institution.Id, institution.Name)
+		_, err := db.Exec("INSERT INTO institution (id, name) VALUES ($1, $2)", institution.Id, institution.Name)
+
 		if err != nil {
 			return err
 		}

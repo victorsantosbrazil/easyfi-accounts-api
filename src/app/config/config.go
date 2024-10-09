@@ -3,12 +3,12 @@ package config
 import (
 	"fmt"
 
-	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/mysql"
+	"github.com/victorsantosbrazil/easyfi-accounts-api/src/common/infra/datasource/postgresql"
 )
 
 type Config struct {
 	Port       int
-	DataSource *mysql.Config
+	DataSource *postgresql.Config
 }
 
 func (c *Config) GetAddress() string {
